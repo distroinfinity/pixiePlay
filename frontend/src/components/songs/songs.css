@@ -1,0 +1,7 @@
+.songs_div{
+    padding: 40px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
