@@ -1,6 +1,7 @@
 import React from "react";
-import "./songs.css";
+import classes from "./../../../styles/songs.module.css";
 import Card from "../Cards/songCard";
+
 function Songs() {
   const data = [
     {
@@ -61,7 +62,7 @@ function Songs() {
     },
   ];
   return (
-    <div className="songs_div">
+    <div className={classes.songs_div}>
       {data.map((d, index) => (
         <Card songData={d} key={index} />
       ))}

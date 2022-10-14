@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: rgb(18,18,18);
+  background-color: rgb(18, 18, 18);
   min-height: 100vh;
 }
 
@@ -14,13 +14,19 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-p,h1,h2,h3,h4,h5,h6{
-  margin:0;
-  padding:0;
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
 }
-a{
-  text-decoration: none!important;
-  color: white!important;;
+a {
+  text-decoration: none !important;
+  color: white !important;
 }
 .App-header {
   background-color: #282c34;
