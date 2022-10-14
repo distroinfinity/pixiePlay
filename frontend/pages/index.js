@@ -16,16 +16,16 @@ import axios from "axios";
 
 import sha256 from "./helperfunctions/hash";
 import { marketplaceAddress } from "./../../backend/config";
-// import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Song from "./components/songs/songs";
 
 function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
 
-  // useEffect(() => {
-  //   loadNFTs();
-  // }, []);
+  useEffect(() => {
+    loadNFTs();
+  }, []);
 
   async function loadNFTs() {
     /* query music */
