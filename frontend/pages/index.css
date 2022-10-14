@@ -1,3 +1,7 @@
+body{
+  margin:0;
+  padding:0;
+}
 .header_main {
   display: flex;
   align-items: center;
@@ -9,6 +13,9 @@
 }
 .header_left {
   flex: 0.1;
+  position: absolute;
+  left:30px;
+  top:20px; 
 }
 .header_left img {
   width: 130px;
@@ -29,7 +36,8 @@
   width: 90%;
 }
 .header_right {
-  flex: 0.1;
+  flex: 0.2;
+
 }
 /* home2 div*/
 .home2 {

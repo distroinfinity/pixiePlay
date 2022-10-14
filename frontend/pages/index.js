@@ -9,23 +9,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import { Link, useLocation } from "react-router-dom";
 import { ConnectButton } from "web3uikit";
 import Link from "next/link";
-
+import classes from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
 
 import sha256 from "./helperfunctions/hash";
 import { marketplaceAddress } from "./../../backend/config";
-import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+// import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Song from "./components/songs/songs";
 
 function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
 
-  useEffect(() => {
-    loadNFTs();
-  }, []);
+  // useEffect(() => {
+  //   loadNFTs();
+  // }, []);
 
   async function loadNFTs() {
     /* query music */
@@ -95,25 +95,33 @@ function Home() {
       </div>
       <div className="home2">
         <div className="sidebar_main">
-          <div className="side_mini active">
-            <AiOutlineHome />
-            <p>Home</p>
-          </div>
-          <div className="side_mini">
-            <RiMoneyDollarCircleLine />
-            <p>Mint new music</p>
-          </div>
+          <Link href="/">
+            <div className="side_mini active">
+              <AiOutlineHome />
+              <p>Home</p>
+            </div>
+          </Link>
+          <Link href="/addnewmusic">
+            <div className="side_mini ">
+              <RiMoneyDollarCircleLine />
+              <p>Mint new music</p>
+            </div>
+          </Link>
           <div className="side_mini">
             <AiOutlineHome />
             <p>My music</p>
           </div>
           <div className="side_mini">
             <IoPersonOutline />
-            <p>Creater Dashboard</p>
+            <p>Creator Dashboard</p>
           </div>
         </div>
 
         <div className="home_right">
+          <h1>
+            gm, <span className="grad">listeners</span>👋
+          </h1>
+          <h4 className="textt">Freshly Minted Music</h4>
           <Song></Song>
         </div>
       </div>

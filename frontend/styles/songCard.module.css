@@ -1,23 +1,27 @@
 .card_main {
   width: 250px;
-  height: 280px;
+  height: 260px;
   text-align: left;
   color: rgb(196, 196, 196);
   background-color: rgb(24, 24, 24);
   border-radius: 5px;
   margin-bottom: 30px;
   position: relative;
+  line-height: 10px;
 }
 
 .playIcon {
   position: absolute;
   z-index: 10;
-  top: 180px;
+  top: 170px;
   right: 30px;
   font-size: 40px;
   color: #1db954;
   display: none;
   cursor: pointer;
+}
+.artistName{
+  color:grey;
 }
 .card_main:hover {
   background-color: rgb(45, 45, 45);
@@ -26,12 +30,18 @@
   display: block;
 }
 
+.price_div{
+  position: relative;
+}
 .card_main h3 {
-  color: #1db954;
+  color: rgb(156,163,175);
 }
 .price {
-  color: #1db954;
+  color: rgb(156,163,175);
   font-size: 18px;
+  position: absolute;
+  right:10px;
+
 }
 .card_main img {
   width: 250px;
