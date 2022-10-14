@@ -12,7 +12,7 @@ import classes from "./../styles/app.module.css";
 
 import { MoralisProvider } from "react-moralis";
 import { NotificationProvider } from "web3uikit";
-
+import "../styles/globals.css";
 // routing done here
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 function MyApp({ Component, pageProps }) {

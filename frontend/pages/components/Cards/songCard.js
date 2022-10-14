@@ -11,7 +11,7 @@ function SongCard({ songData }) {
       <div className={classes.song_data}>
         <h3>{songData?.name}</h3>
         <Link href="/artist">
-          <p>{songData?.artistName}</p>
+          <p className={classes.artistName}>{songData?.artistName}</p>
         </Link>
         <div className={classes.price_div}>
           <p>
