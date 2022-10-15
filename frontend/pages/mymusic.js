@@ -17,7 +17,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ConnectButton } from "web3uikit";
 import Link from "next/link";
 import classes from ".././styles/myMusic.module.css";
-
+import {MdLibraryMusic} from "react-icons/md";
 import { marketplaceAddress } from "./../../backend/config";
 import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 
@@ -111,14 +111,16 @@ function Mymusic({ setSongLink }) {
           </Link>
           <Link href="/mymusic">
             <div className="side_mini active">
-              <AiOutlineHome />
+              <MdLibraryMusic />
               <p>My music</p>
             </div>
           </Link>
-          <div className="side_mini">
-            <IoPersonOutline />
-            <p>Creator Dashboard</p>
-          </div>
+          <Link href="/dashboard">
+            <div className="side_mini">
+              <IoPersonOutline />
+              <p>Creator Dashboard</p>
+            </div>
+          </Link>
         </div>
 
         <div className="home_right">

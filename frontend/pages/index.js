@@ -4,6 +4,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
+import {MdLibraryMusic} from "react-icons/md"
 // import Logo from "./../assets/logo2.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import { Link, useLocation } from "react-router-dom";
@@ -115,14 +116,16 @@ function Home({ setSongLink }) {
           </Link>
           <Link href="/mymusic">
             <div className="side_mini">
-              <AiOutlineHome />
+              <MdLibraryMusic />
               <p>My music</p>
             </div>
           </Link>
-          <div className="side_mini">
-            <IoPersonOutline />
-            <p>Creator Dashboard</p>
-          </div>
+          <Link href="/dashboard">
+            <div className="side_mini">
+              <IoPersonOutline />
+              <p>Creator Dashboard</p>
+            </div>
+          </Link>
         </div>
 
         <div className="home_right">

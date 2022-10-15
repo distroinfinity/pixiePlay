@@ -11,6 +11,7 @@ import { BiSearch } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import {MdLibraryMusic} from "react-icons/md"
 import { IoPersonOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
 // import Logo from "./../assets/logo2.png";
@@ -19,10 +20,10 @@ import { ethers } from "ethers";
 import axios from "axios";
 import Identicon from "identicon.js";
 
-import { marketplaceAddress } from "./../../../backend/config";
-import NFTMarketplace from "./../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+import { marketplaceAddress } from "../../../backend/config";
+import NFTMarketplace from "../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 
-import sha256 from "./../helperfunctions/hash";
+import sha256 from "../helperfunctions/hash";
 
 function Artist({ setSongLink, songLink }) {
   const [tracks, setTracks] = useState([]);
@@ -228,14 +229,16 @@ function Artist({ setSongLink, songLink }) {
           </Link>
           <Link href="/mymusic">
             <div className="side_mini">
-              <AiOutlineHome />
+              <MdLibraryMusic />
               <p>My music</p>
             </div>
           </Link>
-          <div className="side_mini">
-            <IoPersonOutline />
-            <p>Creator Dashboard</p>
-          </div>
+          <Link href="/dashboard">
+            <div className="side_mini">
+              <IoPersonOutline />
+              <p>Creator Dashboard</p>
+            </div>
+          </Link>
         </div>
 
         <div className="home_right1">

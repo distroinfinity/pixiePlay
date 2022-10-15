@@ -48,8 +48,10 @@ function SongCard({ songData, setSongLink }) {
         <p className={classes.artistName}>
           Artist: &nbsp;{" "}
           <Link href={`/artist/${songData.artist}`}>
-            <span style={{ cursor: "pointer" }} className={classes.price}>
-              {"0x...." + songData.artist.substr(songData.artist.length - 5)}
+
+            <span style={{cursor:"pointer"}} className={classes.price}>
+              {"0x...." + songData?.artist?.substr(songData.artist.length - 5)}
+
             </span>
           </Link>
         </p>
