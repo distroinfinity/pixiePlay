@@ -11,7 +11,7 @@ function FansList({ fanData, index }) {
         }}
       >
         <p>{index + 1}</p>
-        <h6>{fanData.address}</h6>
+        <h6>{fanData.fan}</h6>
         <p>{fanData.amount} Matic</p>
       </div>
       {fanData.fanType == 1 ? "VIP" : ""}

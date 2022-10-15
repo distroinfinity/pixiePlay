@@ -29,7 +29,7 @@
 .card_main:hover .playIcon {
   display: block;
 }
-.artistName{
+.artistName {
   position: relative;
 }
 
@@ -55,24 +55,24 @@
 .song_data {
   padding: 10px 10px;
 }
-.buy_nft{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width:80px;
-    margin-bottom: 20px;
-    padding:8px 0px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    background-color:rgb(222, 222, 222);
-    right:20px;
-    border-radius: 5px;
-    margin-top: 10px;
+.buy_nft {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  margin-bottom: 20px;
+  padding: 8px 0px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  background-color: rgb(222, 222, 222);
+  right: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
 }
-.buy_nft:hover{
-    background-color: rgb(45, 45, 45);
-    color:white;
-    border: 1px solid white;
+.buy_nft:hover {
+  background-color: rgb(45, 45, 45);
+  color: white;
+  border: 1px solid white;
 }
