@@ -20,8 +20,8 @@
   display: none;
   cursor: pointer;
 }
-.artistName{
-  color:grey;
+.artistName {
+  color: grey;
 }
 .card_main:hover {
   background-color: rgb(45, 45, 45);
@@ -30,18 +30,17 @@
   display: block;
 }
 
-.price_div{
+.price_div {
   position: relative;
 }
 .card_main h3 {
-  color: rgb(156,163,175);
+  color: rgb(156, 163, 175);
 }
 .price {
-  color: rgb(156,163,175);
+  color: rgb(156, 163, 175);
   font-size: 18px;
   position: absolute;
-  right:10px;
-
+  right: 10px;
 }
 .card_main img {
   width: 250px;

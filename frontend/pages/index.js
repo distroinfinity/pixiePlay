@@ -122,7 +122,7 @@ function Home() {
             gm, <span className="grad">listeners</span>👋
           </h1>
           <h4 className="textt">Freshly Minted Music</h4>
-          <Song></Song>
+          <Song nfts={nfts}></Song>
         </div>
       </div>
     </div>

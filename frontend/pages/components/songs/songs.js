@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./../../../styles/songs.module.css";
 import Card from "../Cards/songCard";
 
-function Songs() {
+function Songs(props) {
   const data = [
     {
       url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
@@ -61,9 +61,10 @@ function Songs() {
       desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
     },
   ];
+
   return (
     <div className={classes.songs_div}>
-      {data.map((d, index) => (
+      {props.nfts.map((d, index) => (
         <Card songData={d} key={index} />
       ))}
     </div>
