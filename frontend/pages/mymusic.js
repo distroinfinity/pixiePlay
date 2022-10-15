@@ -17,7 +17,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ConnectButton } from "web3uikit";
 import Link from "next/link";
 import classes from ".././styles/myMusic.module.css";
-import {MdLibraryMusic} from "react-icons/md";
+import { MdLibraryMusic } from "react-icons/md";
 import { marketplaceAddress } from "./../../backend/config";
 import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 
@@ -82,14 +82,14 @@ function Mymusic({ setSongLink }) {
           </Link>
         </div>
         <div className="header_center">
-          <div className="search_div">
+          {/* <div className="search_div">
             <input
               className="search_input"
               type="text"
               placeholder="Search..."
             />
             <BiSearch />
-          </div>
+          </div> */}
         </div>
         <div className="header_right">
           <ConnectButton moralisAuth={false} />
@@ -112,7 +112,7 @@ function Mymusic({ setSongLink }) {
           <Link href="/mymusic">
             <div className="side_mini active">
               <MdLibraryMusic />
-              <p>My music</p>
+              <p>Owned Music</p>
             </div>
           </Link>
           <Link href="/dashboard">
@@ -127,6 +127,11 @@ function Mymusic({ setSongLink }) {
           <div className={classes.mymusic_main}>
             <h1>My NFTs</h1>
             <div className={classes.mymusic}>
+              {nfts.length == 0 && (
+                <h5 style={{ textAlign: "center", width: "100%" }}>
+                  You dont purchased any NFTs yet...
+                </h5>
+              )}
               {nfts.map((d, index) => (
                 <SongCard key={index} songData={d} setSongLink={setSongLink} />
               ))}

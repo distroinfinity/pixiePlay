@@ -25,7 +25,7 @@ contract NFTMarketplace is ERC721URIStorage {
         string name;
         string description;
         string meetlink;
-        uint256 schedule;
+        string schedule;
     }
 
     struct Fan {
@@ -90,6 +90,17 @@ contract NFTMarketplace is ERC721URIStorage {
         return newTokenId;
     }
 
+    function rewardFans(address[] memory _addresses) public payable {
+        require(
+            msg.value > 0,
+            "Send some amount to be distributed between the fans"
+        );
+        uint count = _addresses.length;
+        for (uint i = 0; i < count; i++) {
+            payable(_addresses[i]).transfer(msg.value / count);
+        }
+    }
+
     function createMarketItem(
         uint256 tokenId,
         uint256 price,
@@ -128,17 +139,16 @@ contract NFTMarketplace is ERC721URIStorage {
 
     // create an event
     function createEvent(
-        address _artist,
         string memory _name,
         string memory _desc,
         string memory _link,
-        uint256 _schedule
+        string memory _schedule
     ) public payable {
-        artistToEvents[_artist].push(events(_name, _desc, _link, _schedule));
+        artistToEvents[msg.sender].push(events(_name, _desc, _link, _schedule));
     }
 
-    function fetchEvents(address artist) public view returns (events[] memory) {
-        return artistToEvents[artist];
+    function fetchEvents() public view returns (events[] memory) {
+        return artistToEvents[msg.sender];
     }
 
     /* Creates the sale of a marketplace item */
@@ -210,7 +220,6 @@ contract NFTMarketplace is ERC721URIStorage {
     /* Returns all unsold market items */
     function fetchMarketItems() public view returns (MarketItem[] memory) {
         uint itemCount = _tokenIds.current();
-        // uint unsoldItemCount = _tokenIds.current() - _itemsSold.current();
         uint currentIndex = 0;
 
         MarketItem[] memory items = new MarketItem[](itemCount);
@@ -256,14 +265,14 @@ contract NFTMarketplace is ERC721URIStorage {
         uint currentIndex = 0;
 
         for (uint i = 0; i < totalItemCount; i++) {
-            if (idToMarketItem[i + 1].seller == msg.sender) {
+            if (idToMarketItem[i + 1].artist == msg.sender) {
                 itemCount += 1;
             }
         }
 
         MarketItem[] memory items = new MarketItem[](itemCount);
         for (uint i = 0; i < totalItemCount; i++) {
-            if (idToMarketItem[i + 1].seller == msg.sender) {
+            if (idToMarketItem[i + 1].artist == msg.sender) {
                 uint currentId = i + 1;
                 MarketItem storage currentItem = idToMarketItem[currentId];
                 items[currentIndex] = currentItem;

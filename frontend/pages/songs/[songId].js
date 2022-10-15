@@ -9,7 +9,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
-import {MdLibraryMusic} from "react-icons/md"
+import { MdLibraryMusic } from "react-icons/md";
 import { Modal, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ethers } from "ethers";
@@ -119,14 +119,14 @@ function SongPage({ setSongLink }) {
           </Link>
         </div>
         <div className="header_center">
-          <div className="search_div">
+          {/* <div className="search_div">
             <input
               className="search_input"
               type="text"
               placeholder="Search..."
             />
             <BiSearch />
-          </div>
+          </div> */}
         </div>
         <div className="header_right">
           <ConnectButton moralisAuth={false} />
@@ -149,7 +149,7 @@ function SongPage({ setSongLink }) {
           <Link href="/mymusic">
             <div className="side_mini">
               <MdLibraryMusic />
-              <p>My music</p>
+              <p>Owned Music</p>
             </div>
           </Link>
           <Link href="/dashboard">

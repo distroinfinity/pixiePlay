@@ -4,7 +4,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
-import {MdLibraryMusic} from "react-icons/md"
+import { MdLibraryMusic } from "react-icons/md";
 // import Logo from "./../assets/logo2.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import { Link, useLocation } from "react-router-dom";
@@ -87,14 +87,14 @@ function Home({ setSongLink }) {
           </Link>
         </div>
         <div className="header_center">
-          <div className="search_div">
-            <input
+          {/* <div className="search_div">
+             <input
               className="search_input"
               type="text"
               placeholder="Search..."
-            />
+            /> 
             <BiSearch />
-          </div>
+          </div> */}
         </div>
         <div className="header_right">
           <ConnectButton moralisAuth={false} />
@@ -117,7 +117,7 @@ function Home({ setSongLink }) {
           <Link href="/mymusic">
             <div className="side_mini">
               <MdLibraryMusic />
-              <p>My music</p>
+              <p>Owned Music</p>
             </div>
           </Link>
           <Link href="/dashboard">
@@ -133,6 +133,11 @@ function Home({ setSongLink }) {
             gm, <span className="grad">listeners</span>👋
           </h1>
           <h4 className="textt">Freshly Minted Music</h4>
+          {nfts.length == 0 && (
+            <h5 style={{ textAlign: "center", width: "100%" }}>
+              Nothing published yet...
+            </h5>
+          )}
           <Song setSongLink={setSongLink} nfts={nfts}></Song>
         </div>
       </div>
