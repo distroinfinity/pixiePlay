@@ -1,6 +1,6 @@
 .card_main {
   width: 250px;
-  height: 290px;
+  height: 300px;
   text-align: left;
   color: rgb(196, 196, 196);
   background-color: rgb(24, 24, 24);
@@ -55,7 +55,24 @@
 .song_data {
   padding: 10px 10px;
 }
-.buy_btn{
-  padding:8px 15px;
-  margin-left: 160px;
+.buy_nft{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:80px;
+    margin-bottom: 20px;
+    padding:8px 0px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    background-color:rgb(222, 222, 222);
+    right:20px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.buy_nft:hover{
+    background-color: rgb(45, 45, 45);
+    color:white;
+    border: 1px solid white;
 }
