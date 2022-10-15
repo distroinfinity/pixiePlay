@@ -10,6 +10,15 @@
   );
   min-height: 91vh;
 }
+.songs_table::-webkit-scrollbar{
+  width:5px;
+}
+.songs_table::-webkit-scrollbar-thumb{
+  background-color: #282c34;
+}
+.songs_table::-webkit-scrollbar-thumb:hover{
+  background-color: #454545;
+}
 .img_div {
   width: 100%;
   position: relative;

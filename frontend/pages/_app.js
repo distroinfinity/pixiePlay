@@ -26,6 +26,7 @@ function MyApp({ Component, pageProps }) {
           {/* <Link href="/"></Link> */}
           <Component songLink={songLink} setSongLink={setSongLink} {...pageProps} />
           <div className="player_div">
+          <p  onClick={(e)=>setSongLink("")} className="x_div">x</p>
             {songLink && songLink !== "" && (
               <AudioPlayer
                 autoPlay

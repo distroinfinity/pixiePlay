@@ -186,7 +186,7 @@ function SongPage({ setSongLink }) {
                 </div>
               </div>
               <div className={classes.song_right}>
-                <button className={classes.play_btn}>Play</button>
+                <button onClick={()=>setSongLink(trackInfo.audio)} className={classes.play_btn}>Play</button>
                 {/* {trackInfo.sold == false ? (
                   <button className={classes.buy_nft}>Buy NFT</button>
                 ) : (

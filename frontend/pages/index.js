@@ -27,10 +27,11 @@ import "react-h5-audio-player/lib/styles.css";
 function Home({ setSongLink }) {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
+  const [newBuy,setNewBuy]=useState(false);
 
   useEffect(() => {
     loadNFTs();
-  }, []);
+  }, [newBuy]);
 
   async function loadNFTs() {
     /* query music */
@@ -133,12 +134,14 @@ function Home({ setSongLink }) {
             gm, <span className="grad">listeners</span>👋
           </h1>
           <h4 className="textt">Freshly Minted Music</h4>
+
           {nfts.length == 0 && (
             <h5 style={{ textAlign: "center", width: "100%" }}>
               Nothing published yet...
             </h5>
           )}
-          <Song setSongLink={setSongLink} nfts={nfts}></Song>
+          <Song newBuy={newBuy} setNewBuy={setNewBuy} setSongLink={setSongLink} nfts={nfts}></Song>
+
         </div>
       </div>
     </div>
