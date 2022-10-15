@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Link from "next/link";
 
 import ReactDOM from "react-dom/client";
@@ -13,15 +13,28 @@ import classes from "./../styles/app.module.css";
 import { MoralisProvider } from "react-moralis";
 import { NotificationProvider } from "web3uikit";
 import "../styles/globals.css";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 // routing done here
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 function MyApp({ Component, pageProps }) {
+   const [songLink, setSongLink] = useState("");
   return (
     <div className={classes.App}>
       <MoralisProvider initializeOnMount={false}>
         <NotificationProvider>
           {/* <Link href="/"></Link> */}
-          <Component {...pageProps} />
+          <Component songLink={songLink} setSongLink={setSongLink} {...pageProps} />
+          <div className="player_div">
+            {songLink && songLink !== "" && (
+              <AudioPlayer
+                autoPlay
+                src={songLink}
+                onPlay={(e) => console.log("onPlay")}
+                // other props here
+              />
+            )}
+          </div>
         </NotificationProvider>
       </MoralisProvider>
     </div>
