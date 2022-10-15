@@ -21,10 +21,10 @@ import Song from "./components/songs/songs";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-function Home() {
+function Home({setSongLink}) {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
-  const [songLink,setSongLink]=useState("");
+
   useEffect(() => {
     loadNFTs();
   }, []);
@@ -129,16 +129,7 @@ function Home() {
           <Song setSongLink={setSongLink} nfts={nfts}></Song>
         </div>
       </div>
-      <div className="player_div">
-        {songLink && songLink !== "" && (
-          <AudioPlayer
-            autoPlay
-            src={songLink}
-            onPlay={(e) => console.log("onPlay")}
-            // other props here
-          />
-        )}
-      </div>
+      
     </div>
   );
 }
