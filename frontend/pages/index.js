@@ -15,6 +15,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 
 import sha256 from "./helperfunctions/hash";
+
 import { marketplaceAddress } from "./../../backend/config";
 import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 

@@ -2,6 +2,8 @@ import React from "react";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import classes from "../../../styles/songList.module.css";
 function SongsList({ songdata, index }) {
+  console.log(songdata);
+
   return (
     <div className={classes.songlist_main}>
       <div
@@ -12,7 +14,7 @@ function SongsList({ songdata, index }) {
         }}
       >
         <p>{index + 1}</p>
-        <img className={classes.song_img} src={songdata.url} />
+        <img className={classes.song_img} src={songdata.cover} />
         <h5>{songdata.name}</h5>
         <p>{songdata.price} Matic</p>
       </div>

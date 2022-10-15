@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "../../styles/fansList.module.css"
+import classes from "../../styles/fansList.module.css";
 function FansList({ fanData, index }) {
   return (
     <div className={classes.songlist_main}>
@@ -11,9 +11,10 @@ function FansList({ fanData, index }) {
         }}
       >
         <p>{index + 1}</p>
-        <h5>{fanData.address}</h5>
-        <p>{fanData.donations} Matic</p>
+        <h6>{fanData.fan}</h6>
+        <p>{fanData.amount} Matic</p>
       </div>
+      {fanData.fanType == 1 ? "VIP" : ""}
     </div>
   );
 }

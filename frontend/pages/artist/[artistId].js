@@ -1,5 +1,5 @@
-import React,{useEffect, useState} from "react";
-import classes from  "../../styles/artist.module.css";
+import React, { useEffect, useState } from "react";
+import classes from "../../styles/artist.module.css";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import SongsList from "../components/songs/songList";
 import FansList from "../components/fansList";
@@ -12,17 +12,112 @@ import { AiOutlineHome } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 // import Logo from "./../assets/logo2.png";
 import "bootstrap/dist/css/bootstrap.min.css";
-function Artist({setSongLink,songLink}) {
-    let router=useRouter();
-    const [artistId,setArtistId]=useState("");
-    useEffect(()=>{
-        setArtistId(router.query.artistId);
-       
-    },[]);
- console.log(artistId);
+import { ethers } from "ethers";
+import axios from "axios";
+import Identicon from "identicon.js";
+
+import { marketplaceAddress } from "./../../../backend/config";
+import NFTMarketplace from "./../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+
+import sha256 from "./../helperfunctions/hash";
+
+function Artist({ setSongLink, songLink }) {
+  const [tracks, setTracks] = useState([]);
+  const [fans, setFans] = useState([]);
+
+  const router = useRouter();
+  const [artistId, setArtistId] = useState(null);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+  async function loadData() {
+    await fetchTracks(router.query.artistId);
+    await fetchFans(router.query.artistId);
+  }
+
+  async function fetchTracks(artist) {
+    if (tracks.length > 0) return;
+    console.log("artist id is  ", artist);
+    const provider = new ethers.providers.JsonRpcProvider();
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      provider
+    );
+    const data = await contract.fetchNFTSforArtist(artist);
+
+    const items = await Promise.all(
+      data.map(async (i) => {
+        const tokenUri = await contract.tokenURI(i.tokenId);
+        const meta = await axios.get(tokenUri);
+        // console.log("meta data is", meta.data.image);
+        let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+        const hash = await sha256(
+          tokenUri.replace("https://music-mania.infura-ipfs.io/ipfs/", "")
+        );
+        let item = {
+          price,
+          tokenId: i.tokenId.toNumber(),
+          seller: i.seller,
+          owner: i.owner,
+          image: meta.data.image,
+          name: meta.data.name,
+          description: meta.data.description,
+          tokenURI: hash,
+          artist: i.artist,
+          sold: i.sold,
+          audio: meta.data.image,
+          cover: i.cover,
+        };
+        return item;
+      })
+    );
+
+    console.log("refined are..", items);
+
+    setTracks(items);
+  }
+
+  async function fetchFans(artist) {
+    if (!artist) return;
+    // console.log("artist id is  ", artist);
+    const provider = new ethers.providers.JsonRpcProvider();
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      provider
+    );
+    const data = await contract.fetchFansforArtist(artist);
+    console.log("fans... ", data);
+
+    const items = await Promise.all(
+      data.map(async (i) => {
+        // const tokenUri = await contract.tokenURI(i.tokenId);
+        // const meta = await axios.get(tokenUri);
+        // console.log("meta data is", meta.data.image);
+        let amount = ethers.utils.formatUnits(i.amount.toString(), "ether");
+        let type =
+          ethers.utils.formatUnits(i.fanType.toString(), "ether") * 1e18;
+        // const hash = await sha256(
+        //   tokenUri.replace("https://music-mania.infura-ipfs.io/ipfs/", "")
+        // );
+        let item = {
+          amount,
+          fan: i.fan,
+          fanType: type,
+        };
+        return item;
+      })
+    );
+    console.log("refined fans", items);
+
+    setFans(items);
+  }
+
   const data = [
     {
       url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
@@ -152,8 +247,13 @@ function Artist({setSongLink,songLink}) {
         <div className="home_right1">
           <div className={classes.artist_main}>
             <div className={classes.img_div}>
-              <img src="https://res.cloudinary.com/dwzmsvp7f/image/fetch/q_75,f_auto,w_760,c_fill,h_380,g_face/q_75,f_auto,w_660,c_thumb,h_380,g_west/https%3A%2F%2Fmedia.insider.in%2Fimage%2Fupload%2Fc_crop%2Cg_custom%2Fv1499859384%2Fw22jeadhkdltecmr1fac.jpg" />
-              <h1>Diljeet Dosanjh</h1>
+              <img
+                src={`data:image/png;base64,${new Identicon(
+                  router.query.artistId,
+                  300
+                ).toString()}`}
+              />
+              <h3>{router.query.artistId}</h3>
             </div>
             <div className={classes.artist_songs}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -163,7 +263,7 @@ function Artist({setSongLink,songLink}) {
               </div>
 
               <div className={classes.songs_table}>
-                {data.map((d, index) => (
+                {tracks.map((d, index) => (
                   <SongsList songdata={d} index={index} />
                 ))}
               </div>
@@ -171,7 +271,7 @@ function Artist({setSongLink,songLink}) {
             <div className={classes.artist_fans}>
               <h2>Top Fans</h2>
               <div className={classes.songs_table}>
-                {fanData.map((d, index) => (
+                {fans.map((d, index) => (
                   <FansList fanData={d} index={index} />
                 ))}
               </div>
@@ -179,7 +279,6 @@ function Artist({setSongLink,songLink}) {
           </div>
         </div>
       </div>
-    
     </div>
   );
 }

@@ -11,35 +11,15 @@ function SongCard({ songData, setSongLink }) {
   function handleSongPlay() {
     setSongLink(songData.audio);
   }
-
-  async function buyNFT() {
-    /* needs the user to sign the transaction, so will use Web3Provider and sign it */
-    console.log("Buying this", songData);
-    const web3Modal = new Web3Modal();
-    const connection = await web3Modal.connect();
-    const provider = new ethers.providers.Web3Provider(connection);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      marketplaceAddress,
-      NFTMarketplace.abi,
-      signer
-    );
-    /* user will be prompted to pay the asking proces to complete the transaction */
-    const price = ethers.utils.parseUnits(songData.price.toString(), "ether");
-    const transaction = await contract.createMarketSale(songData.tokenId, {
-      value: price,
-    });
-    await transaction.wait();
+  async function resell() {
+    console.log("nft:", nft);
+    // router.push(`/resell-nft?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`);
     // loadNFTs();
   }
 
   // console.log("song data is", songData);
   return (
     <div className={classes.card_main}>
-      {/* `data:image/png;base64,${new Identicon(
-          songData.tokenURI,
-          500
-        ).toString()}` */}
       <img src={songData.cover} alt="cover" />{" "}
       <BsPlayCircle onClick={handleSongPlay} className={classes.playIcon} />
       <div className={classes.song_data}>
@@ -60,11 +40,10 @@ function SongCard({ songData, setSongLink }) {
             <span className={classes.price}>{songData?.price} Matic</span>
           </p>
         </div>
-        
-          <button onClick={buyNFT} className={classes.buy_btn}>
-            Resell
-          </button>
-        
+
+        <button onClick={resell} className={classes.buy_btn}>
+          Resell
+        </button>
       </div>
     </div>
   );
