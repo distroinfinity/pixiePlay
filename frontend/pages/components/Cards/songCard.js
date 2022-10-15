@@ -40,22 +40,23 @@ function SongCard({ songData, setSongLink }) {
           songData.tokenURI,
           500
         ).toString()}` */}
-      <img src={songData.cover} alt="cover" />{" "}
+      <Link href={`/songs/${songData.address}`}>
+        <img src={songData.cover} alt="cover" />
+      </Link>{" "}
       <BsPlayCircle onClick={handleSongPlay} className={classes.playIcon} />
       <div className={classes.song_data}>
-        <h3>{songData?.name}</h3>
-
-
+        {" "}
+        <Link href={`/songs/${songData.address}`}>
+          <h3>{songData?.name}</h3>
+        </Link>
         <p className={classes.artistName}>
           Artist: &nbsp;{" "}
           <Link href={`/artist/${songData.artist}`}>
-
-            <span className={classes.price}>
+            <span style={{cursor:"pointer"}} className={classes.price}>
               {"0x...." + songData.artist.substr(songData.artist.length - 5)}
             </span>
           </Link>
         </p>
-
         <div className={classes.price_div}>
           <p>
             Price: &nbsp;{" "}
@@ -63,7 +64,7 @@ function SongCard({ songData, setSongLink }) {
           </p>
         </div>
         {songData.sold == false ? (
-          <button onClick={buyNFT} className={classes.buy_btn}>
+          <button onClick={buyNFT} className={classes.buy_nft}>
             Buy
           </button>
         ) : (

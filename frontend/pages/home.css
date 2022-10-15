@@ -62,13 +62,14 @@ background: -webkit-linear-gradient(90deg, rgba(31,181,205,1) 0%, rgba(58,139,22
 /* home2 div*/
 .home2 {
   display: flex;
+  height: 90vh;
 }
 
 /*Sidebar*/
 .sidebar_main {
   padding-top: 90px;
   width: 17%;
-  height: 91vh;
+  height: 90vh;
   color: rgb(220, 220, 220);
   background-color: black;
 }
@@ -99,7 +100,7 @@ background: -webkit-linear-gradient(90deg, rgba(31,181,205,1) 0%, rgba(58,139,22
 
 .home_right {
   width: 83%;
-  height: 91vh;
+  height: 90vh;
   overflow-y: scroll;
   padding:0 40px;
   padding-bottom:90px;  
