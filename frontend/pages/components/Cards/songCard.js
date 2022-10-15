@@ -23,14 +23,16 @@ function SongCard({ songData,setSongLink }) {
       <BsPlayCircle onClick={handleSongPlay} className={classes.playIcon} />
       <div className={classes.song_data}>
         <h3>{songData?.name}</h3>
-        <Link href="/artist">
-          <p className={classes.artistName}>
-            Artist: &nbsp;{" "}
+
+        <p className={classes.artistName}>
+          Artist: &nbsp;{" "}
+          <Link href={`/artist/${songData.artist}`}>
             <span className={classes.price}>
               {"0x...." + songData.artist.substr(songData.artist.length - 5)}
             </span>
-          </p>
-        </Link>
+          </Link>
+        </p>
+
         <div className={classes.price_div}>
           <p>
             Price: &nbsp;{" "}
