@@ -34,6 +34,7 @@ contract NFTMarketplace is ERC721URIStorage {
         address payable artist;
         uint royalty;
         bool sold;
+        string cover;
     }
 
     event MarketItemCreated(
@@ -43,7 +44,8 @@ contract NFTMarketplace is ERC721URIStorage {
         uint256 price,
         address artist,
         uint256 royalty,
-        bool sold
+        bool sold,
+        string cover
     );
 
     constructor() ERC721("Music Tokens", "MP3T") {
@@ -68,21 +70,23 @@ contract NFTMarketplace is ERC721URIStorage {
     function createToken(
         string memory tokenURI,
         uint256 price,
-        uint royalty
+        uint royalty,
+        string memory coverUri
     ) public payable returns (uint) {
         _tokenIds.increment();
         uint256 newTokenId = _tokenIds.current();
 
         _mint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, tokenURI);
-        createMarketItem(newTokenId, price, royalty);
+        createMarketItem(newTokenId, price, royalty, coverUri);
         return newTokenId;
     }
 
     function createMarketItem(
         uint256 tokenId,
         uint256 price,
-        uint256 royalty
+        uint256 royalty,
+        string memory coverUri
     ) private {
         require(price > 0, "Price must be at least 1 wei");
         require(
@@ -105,7 +109,8 @@ contract NFTMarketplace is ERC721URIStorage {
             price,
             payable(msg.sender),
             royalty,
-            false
+            false,
+            coverUri
         );
 
         _transfer(msg.sender, address(this), tokenId);
@@ -116,7 +121,8 @@ contract NFTMarketplace is ERC721URIStorage {
             price,
             msg.sender,
             royalty,
-            false
+            false,
+            coverUri
         );
     }
 

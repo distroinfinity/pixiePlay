@@ -36,6 +36,7 @@ function Home() {
       provider
     );
     const data = await contract.fetchMarketItems();
+    console.log("nfts are", data);
 
     /*
      *  map over items returned from smart contract and format
@@ -62,11 +63,12 @@ function Home() {
           artist: i.artist,
           sold: i.sold,
           audio: meta.data.image,
+          cover: i.cover,
         };
         return item;
       })
     );
-    console.log("nfts are", items);
+
     setNfts(items);
     setLoadingState("loaded");
   }

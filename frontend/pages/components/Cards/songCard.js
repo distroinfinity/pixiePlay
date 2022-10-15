@@ -5,16 +5,16 @@ import Link from "next/link";
 import Identicon from "identicon.js";
 
 function SongCard({ songData }) {
-  console.log("song data is", songData);
+  {
+    console.log("here", songData);
+  }
   return (
     <div className={classes.card_main}>
-      <img
-        src={`data:image/png;base64,${new Identicon(
+      {/* `data:image/png;base64,${new Identicon(
           songData.tokenURI,
           500
-        ).toString()}`}
-        alt="cover"
-      />{" "}
+        ).toString()}` */}
+      <img src={songData.cover} alt="cover" />{" "}
       <BsPlayCircle className={classes.playIcon} />
       <div className={classes.song_data}>
         <h3>{songData?.name}</h3>
