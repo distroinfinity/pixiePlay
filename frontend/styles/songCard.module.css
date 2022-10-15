@@ -1,6 +1,6 @@
 .card_main {
   width: 250px;
-  height: 260px;
+  height: 290px;
   text-align: left;
   color: rgb(196, 196, 196);
   background-color: rgb(24, 24, 24);
@@ -13,7 +13,7 @@
 .playIcon {
   position: absolute;
   z-index: 10;
-  top: 170px;
+  top: 100px;
   right: 30px;
   font-size: 40px;
   color: #1db954;
@@ -28,6 +28,9 @@
 }
 .card_main:hover .playIcon {
   display: block;
+}
+.artistName{
+  position: relative;
 }
 
 .price_div {
@@ -51,4 +54,8 @@
 }
 .song_data {
   padding: 10px 10px;
+}
+.buy_btn{
+  padding:8px 15px;
+  margin-left: 160px;
 }

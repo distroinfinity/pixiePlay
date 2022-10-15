@@ -65,7 +65,7 @@ function Songs(props) {
   return (
     <div className={classes.songs_div}>
       {props.nfts.map((d, index) => (
-        <Card songData={d} key={index} />
+        <Card setSongLink={props.setSongLink} songData={d} key={index} />
       ))}
     </div>
   );
