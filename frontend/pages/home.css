@@ -102,6 +102,13 @@ background: -webkit-linear-gradient(90deg, rgba(31,181,205,1) 0%, rgba(58,139,22
   height: 91vh;
   overflow-y: scroll;
   padding:0 40px;
+  padding-bottom:90px;  
+}
+.home_right1{
+    width: 83%;
+  height: 91vh;
+  overflow-y: scroll;
+  padding:0 0px;
 }
 .player_div{
   position: absolute;

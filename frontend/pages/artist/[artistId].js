@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import classes from  "../../styles/artist.module.css";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import SongsList from "../components/songs/songList";
@@ -12,10 +12,17 @@ import { AiOutlineHome } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
+import {useRouter} from "next/router";
 // import Logo from "./../assets/logo2.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 function Artist({setSongLink,songLink}) {
-      
+    let router=useRouter();
+    const [artistId,setArtistId]=useState("");
+    useEffect(()=>{
+        setArtistId(router.query.artistId);
+       
+    },[]);
+ console.log(artistId);
   const data = [
     {
       url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
@@ -142,7 +149,7 @@ function Artist({setSongLink,songLink}) {
           </div>
         </div>
 
-        <div className="home_right">
+        <div className="home_right1">
           <div className={classes.artist_main}>
             <div className={classes.img_div}>
               <img src="https://res.cloudinary.com/dwzmsvp7f/image/fetch/q_75,f_auto,w_760,c_fill,h_380,g_face/q_75,f_auto,w_660,c_thumb,h_380,g_west/https%3A%2F%2Fmedia.insider.in%2Fimage%2Fupload%2Fc_crop%2Cg_custom%2Fv1499859384%2Fw22jeadhkdltecmr1fac.jpg" />
@@ -172,16 +179,7 @@ function Artist({setSongLink,songLink}) {
           </div>
         </div>
       </div>
-      <div className="player_div">
-        {songLink && songLink !== "" && (
-          <AudioPlayer
-            autoPlay
-            src={songLink}
-            onPlay={(e) => console.log("onPlay")}
-            // other props here
-          />
-        )}
-      </div>
+    
     </div>
   );
 }
