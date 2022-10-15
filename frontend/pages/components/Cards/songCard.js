@@ -2,14 +2,38 @@ import React from "react";
 import classes from "./../../../styles/songCard.module.css";
 import { BsPlayCircle } from "react-icons/bs";
 import Link from "next/link";
-import Identicon from "identicon.js";
+import { marketplaceAddress } from "./../../../../backend/config";
+import NFTMarketplace from "./../../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+import Web3Modal from "web3modal";
+import { ethers } from "ethers";
 
 function SongCard({ songData, setSongLink }) {
   function handleSongPlay() {
     setSongLink(songData.audio);
   }
 
-  console.log("song data is", songData);
+  async function buyNFT() {
+    /* needs the user to sign the transaction, so will use Web3Provider and sign it */
+    console.log("Buying this", songData);
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      signer
+    );
+    /* user will be prompted to pay the asking proces to complete the transaction */
+    const price = ethers.utils.parseUnits(songData.price.toString(), "ether");
+    const transaction = await contract.createMarketSale(songData.tokenId, {
+      value: price,
+    });
+    await transaction.wait();
+    // loadNFTs();
+  }
+
+  // console.log("song data is", songData);
   return (
     <div className={classes.card_main}>
       {/* `data:image/png;base64,${new Identicon(
@@ -20,7 +44,7 @@ function SongCard({ songData, setSongLink }) {
       <BsPlayCircle onClick={handleSongPlay} className={classes.playIcon} />
       <div className={classes.song_data}>
         <h3>{songData?.name}</h3>
-        <Link href="/artist">
+        <Link href="/artist/gdjajs">
           <p className={classes.artistName}>
             Artist: &nbsp;{" "}
             <span className={classes.price}>
@@ -34,7 +58,13 @@ function SongCard({ songData, setSongLink }) {
             <span className={classes.price}>{songData?.price} Matic</span>
           </p>
         </div>
-        <button className={classes.buy_btn}>Buy</button>
+        {songData.sold == false ? (
+          <button onClick={buyNFT} className={classes.buy_btn}>
+            Buy
+          </button>
+        ) : (
+          <h4 style={{ color: "red" }}>SOLD</h4>
+        )}
       </div>
     </div>
   );

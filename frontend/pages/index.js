@@ -17,11 +17,12 @@ import axios from "axios";
 import sha256 from "./helperfunctions/hash";
 import { marketplaceAddress } from "./../../backend/config";
 import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+
 import Song from "./components/songs/songs";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-function Home({setSongLink}) {
+function Home({ setSongLink }) {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
 
@@ -129,7 +130,6 @@ function Home({setSongLink}) {
           <Song setSongLink={setSongLink} nfts={nfts}></Song>
         </div>
       </div>
-      
     </div>
   );
 }
