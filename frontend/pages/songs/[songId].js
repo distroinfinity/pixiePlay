@@ -9,6 +9,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
+import {MdLibraryMusic} from "react-icons/md"
 import { Modal, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 function SongPage({ setSongLink }) {
@@ -96,14 +97,16 @@ function SongPage({ setSongLink }) {
           </Link>
           <Link href="/mymusic">
             <div className="side_mini">
-              <AiOutlineHome />
+              <MdLibraryMusic />
               <p>My music</p>
             </div>
           </Link>
-          <div className="side_mini">
-            <IoPersonOutline />
-            <p>Creator Dashboard</p>
-          </div>
+          <Link href="/dashboard">
+            <div className="side_mini">
+              <IoPersonOutline />
+              <p>Creator Dashboard</p>
+            </div>
+          </Link>
         </div>
 
         <div className="home_right1">

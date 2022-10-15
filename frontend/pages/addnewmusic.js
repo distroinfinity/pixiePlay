@@ -6,6 +6,7 @@ import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
 import { ConnectButton } from "web3uikit";
 import { useEffect, useState } from "react";
+import {MdLibraryMusic} from "react-icons/md"
 import { ethers } from "ethers";
 import axios from "axios";
 import AddmusicForm from './components/addmusic/addmusicForm';
@@ -55,14 +56,16 @@ function Addnewmusic() {
           </Link>
           <Link href="/mymusic">
             <div className="side_mini">
-              <AiOutlineHome />
+              <MdLibraryMusic />
               <p>My music</p>
             </div>
           </Link>
-          <div className="side_mini">
-            <IoPersonOutline />
-            <p>Creator Dashboard</p>
-          </div>
+          <Link href="/dashboard">
+            <div className="side_mini">
+              <IoPersonOutline />
+              <p>Creator Dashboard</p>
+            </div>
+          </Link>
         </div>
 
         <div className="home_right">

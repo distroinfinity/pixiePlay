@@ -53,7 +53,7 @@ function SongCard({ songData, setSongLink }) {
           Artist: &nbsp;{" "}
           <Link href={`/artist/${songData.artist}`}>
             <span style={{cursor:"pointer"}} className={classes.price}>
-              {"0x...." + songData.artist.substr(songData.artist.length - 5)}
+              {"0x...." + songData?.artist?.substr(songData.artist.length - 5)}
             </span>
           </Link>
         </p>
