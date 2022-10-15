@@ -7,7 +7,7 @@
 .mymusic{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
     flex-wrap: wrap;
     margin-top: 40px;
 }

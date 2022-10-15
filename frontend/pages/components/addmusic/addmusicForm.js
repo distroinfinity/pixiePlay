@@ -182,7 +182,7 @@ function AddmusicForm() {
         <input
           onChange={selectCover}
           type="file"
-          accept=".jpeg"
+          accept=".jpeg,.jpg"
           className={classes.inputt}
         />
       </div>

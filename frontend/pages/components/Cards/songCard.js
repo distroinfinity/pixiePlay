@@ -7,7 +7,7 @@ import NFTMarketplace from "./../../../../backend/artifacts/contracts/NFTMarketp
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 
-function SongCard({ songData, setSongLink }) {
+function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
   function handleSongPlay() {
     setSongLink(songData.audio);
   }
@@ -30,6 +30,7 @@ function SongCard({ songData, setSongLink }) {
       value: price,
     });
     await transaction.wait();
+    setNewBuy(!newBuy);
     // loadNFTs();
   }
 
@@ -66,7 +67,7 @@ function SongCard({ songData, setSongLink }) {
             Buy
           </button>
         ) : (
-          <h4 style={{ color: "red" }}>SOLD</h4>
+          <h4 style={{ color: "red",fontSize:"20px",marginTop:"30px" }}>SOLD</h4>
         )}
       </div>
     </div>

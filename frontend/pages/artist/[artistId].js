@@ -255,13 +255,13 @@ function Artist({ setSongLink, songLink }) {
             <div className={classes.artist_songs}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 {" "}
-                <BsFillPlayCircleFill className={classes.play_icon} />
-                <h2 style={{ marginLeft: "30px" }}>Popular</h2>
+               
+                <h2 style={{ marginLeft: "0px" }}>Popular</h2>
               </div>
 
               <div className={classes.songs_table}>
                 {tracks.map((d, index) => (
-                  <SongsList songdata={d} index={index} />
+                  <SongsList setSongLink={setSongLink} songdata={d} index={index} />
                 ))}
               </div>
             </div>
