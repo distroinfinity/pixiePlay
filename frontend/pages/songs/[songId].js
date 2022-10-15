@@ -67,7 +67,7 @@ function SongPage({setSongLink}) {
       <div className="home2">
         <div className="sidebar_main">
           <Link href="/">
-            <div className="side_mini active">
+            <div className="side_mini ">
               <AiOutlineHome />
               <p>Home</p>
             </div>
@@ -78,10 +78,12 @@ function SongPage({setSongLink}) {
               <p>Mint new music</p>
             </div>
           </Link>
-          <div className="side_mini">
-            <AiOutlineHome />
-            <p>My music</p>
-          </div>
+          <Link href="/mymusic">
+            <div className="side_mini">
+              <AiOutlineHome />
+              <p>My music</p>
+            </div>
+          </Link>
           <div className="side_mini">
             <IoPersonOutline />
             <p>Creator Dashboard</p>

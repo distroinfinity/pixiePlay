@@ -113,10 +113,12 @@ function Home({ setSongLink }) {
               <p>Mint new music</p>
             </div>
           </Link>
-          <div className="side_mini">
-            <AiOutlineHome />
-            <p>My music</p>
-          </div>
+          <Link href="/mymusic">
+            <div className="side_mini">
+              <AiOutlineHome />
+              <p>My music</p>
+            </div>
+          </Link>
           <div className="side_mini">
             <IoPersonOutline />
             <p>Creator Dashboard</p>
