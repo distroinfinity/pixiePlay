@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState, useEffect } from "react";
 import classes from "../styles/dashboard.module.css";
 import { BiSearch } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
@@ -11,12 +11,24 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import { Link, useLocation } from "react-router-dom";
 import { ConnectButton } from "web3uikit";
 import Link from "next/link";
-import SongCard from './components/Cards/songCard';
-import EventList from './components/eventList/eventList';
+import SongCard from "./components/Cards/songCard";
+import EventList from "./components/eventList/eventList";
 import { Modal, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-function Dashboard({setSongLink}) {
-     const data = [
+import Web3Modal from "web3modal";
+import axios from "axios";
+import { ethers } from "ethers";
+import sha256 from "./helperfunctions/hash";
+
+import { marketplaceAddress } from "./../../backend/config";
+import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+import { Router } from "next/router";
+import { useRouter } from "next/router";
+
+function Dashboard({ setSongLink }) {
+  const router = useRouter();
+
+  const data = [
     {
       url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
       name: "Gaani",
@@ -97,9 +109,114 @@ function Dashboard({setSongLink}) {
   ];
   const [show, setShow] = useState(false);
   const [name, setName] = useState();
-    const [date, setDate] = useState();
-    const [desc, setDesc] = useState();
-    const [link, setLink] = useState();
+  const [date, setDate] = useState();
+  const [desc, setDesc] = useState();
+  const [link, setLink] = useState();
+  const [myNfts, setMyNfts] = useState([]);
+  const [Events, setEvents] = useState([]);
+  useEffect(() => {
+    loadNFTs();
+    loadEvents();
+  }, []);
+  async function scheduleEvent(e) {
+    e.preventDefault();
+    console.log("creating event/......", name, desc, link, date);
+    const web3Modal = new Web3Modal({
+      network: "mainnet",
+      cacheProvider: true,
+    });
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      signer
+    );
+    const transaction = await contract.createEvent(name, desc, link, date);
+    transaction.wait();
+    console.log("created");
+    handleClose();
+    setEvents((e) => [
+      ...e,
+      { name: name, description: desc, meetLink: link, time: date },
+    ]);
+  }
+  async function loadNFTs() {
+    const web3Modal = new Web3Modal({
+      network: "mainnet",
+      cacheProvider: true,
+    });
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      signer
+    );
+    const data = await contract.fetchItemsListed();
+    // console.log(data);
+    const items = await Promise.all(
+      data.map(async (i) => {
+        const tokenUri = await contract.tokenURI(i.tokenId);
+        const meta = await axios.get(tokenUri);
+        let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+        const hash = await sha256(
+          tokenUri.replace("https://music-mania.infura-ipfs.io/ipfs/", "")
+        );
+        let item = {
+          price,
+          tokenId: i.tokenId.toNumber(),
+          seller: i.seller,
+          owner: i.owner,
+          image: meta.data.image,
+          name: meta.data.name,
+          description: meta.data.description,
+          identiconHash: hash,
+          artist: i.artist,
+          sold: i.sold,
+          audio: meta.data.image,
+          cover: i.cover,
+        };
+        return item;
+      })
+    );
+    // console.log("refined my listed", items);
+    setMyNfts(items);
+  }
+  async function loadEvents() {
+    const web3Modal = new Web3Modal({
+      network: "mainnet",
+      cacheProvider: true,
+    });
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      signer
+    );
+    const data = await contract.fetchEvents();
+    const items = await Promise.all(
+      data.map(async (i) => {
+        let item = {
+          description: i.description,
+          meetlink: i.meetlink,
+          name: i.name,
+          schedule: i.schedule,
+        };
+        return item;
+      })
+    );
+    console.log("refined eve", items);
+    setEvents(items);
+  }
+
   function handleShow() {
     setShow(true);
   }
@@ -112,17 +229,16 @@ function Dashboard({setSongLink}) {
     if (name === "name") {
       setName(value);
     }
-     if (name === "date") {
-       setDate(value);
-     }
-      if (name === "desc") {
-        setDesc(value);
-      }
-       if (name === "link") {
-         setLink(value);
-       }
+    if (name === "date") {
+      setDate(value);
+    }
+    if (name === "desc") {
+      setDesc(value);
+    }
+    if (name === "link") {
+      setLink(value);
+    }
   }
-
 
   return (
     <div>
@@ -133,19 +249,20 @@ function Dashboard({setSongLink}) {
           </Link>
         </div>
         <div className="header_center">
-          <div className="search_div">
+          {/* <div className="search_div">
             <input
               className="search_input"
               type="text"
               placeholder="Search..."
             />
             <BiSearch />
-          </div>
+          </div> */}
         </div>
         <div className="header_right">
           <ConnectButton moralisAuth={false} />
         </div>
       </div>
+
       <div className="home2">
         <div className="sidebar_main">
           <Link href="/">
@@ -163,7 +280,7 @@ function Dashboard({setSongLink}) {
           <Link href="/mymusic">
             <div className="side_mini">
               <MdLibraryMusic />
-              <p>My music</p>
+              <p>Owned Music</p>
             </div>
           </Link>
           <Link href="/dashboard">
@@ -179,7 +296,12 @@ function Dashboard({setSongLink}) {
             <h1>My NFTs</h1>
             <br />
             <div className={classes.dashboard_nfts}>
-              {data.map((d, index) => (
+              {myNfts.length == 0 && (
+                <h5 style={{ textAlign: "center", width: "100%" }}>
+                  You haven't minted any music yet.....
+                </h5>
+              )}
+              {myNfts.map((d, index) => (
                 <SongCard key={index} songData={d} setSongLink={setSongLink} />
               ))}
             </div>
@@ -224,7 +346,12 @@ function Dashboard({setSongLink}) {
                         width: "100%",
                       }}
                     >
-                      <button className={classes.buy_btn}>Add Event</button>
+                      <button
+                        onClick={(e) => scheduleEvent(e)}
+                        className={classes.buy_btn}
+                      >
+                        Add Event
+                      </button>
                     </div>
                   </Form>
                 </Modal.Body>
@@ -234,11 +361,13 @@ function Dashboard({setSongLink}) {
               <button onClick={handleShow} className={classes.createEvent}>
                 Create Event
               </button>
-              <div className={classes.events}>
-                {events.map((e, index) => (
-                  <EventList eventData={e} index={index} />
-                ))}
-              </div>
+              {Events.length == 0 && (
+                <h5>You haven't created any events yet...</h5>
+              )}
+              {Events.map((e, index) => (
+                <EventList eventData={e} index={index} />
+              ))}
+              <div className={classes.events}></div>
             </div>
           </div>
         </div>
@@ -247,4 +376,4 @@ function Dashboard({setSongLink}) {
   );
 }
 
-export default Dashboard
+export default Dashboard;

@@ -11,7 +11,7 @@ import { BiSearch } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
 import { Outlet } from "react-router-dom";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
-import {MdLibraryMusic} from "react-icons/md"
+import { MdLibraryMusic } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
 // import Logo from "./../assets/logo2.png";
@@ -200,14 +200,14 @@ function Artist({ setSongLink, songLink }) {
           </Link>
         </div>
         <div className="header_center">
-          <div className="search_div">
+          {/* <div className="search_div">
             <input
               className="search_input"
               type="text"
               placeholder="Search..."
             />
             <BiSearch />
-          </div>
+          </div> */}
         </div>
         <div className="header_right">
           <ConnectButton moralisAuth={false} />
@@ -230,7 +230,7 @@ function Artist({ setSongLink, songLink }) {
           <Link href="/mymusic">
             <div className="side_mini">
               <MdLibraryMusic />
-              <p>My music</p>
+              <p>Owned Music</p>
             </div>
           </Link>
           <Link href="/dashboard">
