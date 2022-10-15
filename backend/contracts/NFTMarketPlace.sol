@@ -19,6 +19,14 @@ contract NFTMarketplace is ERC721URIStorage {
     mapping(address => Fan[]) private artistToFan;
     mapping(uint256 => Fan[]) private nftToFan;
     mapping(uint256 => MarketItem) private idToMarketItem;
+    mapping(address => events[]) private artistToEvents;
+
+    struct events {
+        string name;
+        string description;
+        string meetlink;
+        uint256 schedule;
+    }
 
     struct Fan {
         address fan;
@@ -94,14 +102,6 @@ contract NFTMarketplace is ERC721URIStorage {
             "Price must be equal to listing price"
         );
 
-        // uint256 tokenId;
-        // address payable seller;
-        // address payable owner;
-        // uint256 price;
-        // address payable artist;
-        // uint256 royalty;
-        // bool sold;
-
         idToMarketItem[tokenId] = MarketItem(
             tokenId,
             payable(msg.sender),
@@ -124,6 +124,21 @@ contract NFTMarketplace is ERC721URIStorage {
             false,
             coverUri
         );
+    }
+
+    // create an event
+    function createEvent(
+        address _artist,
+        string memory _name,
+        string memory _desc,
+        string memory _link,
+        uint256 _schedule
+    ) public payable {
+        artistToEvents[_artist].push(events(_name, _desc, _link, _schedule));
+    }
+
+    function fetchEvents(address artist) public view returns (events[] memory) {
+        return artistToEvents[artist];
     }
 
     /* Creates the sale of a marketplace item */
