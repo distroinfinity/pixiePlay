@@ -4,35 +4,20 @@ import { BsPlayCircle } from "react-icons/bs";
 import Link from "next/link";
 import Identicon from "identicon.js";
 
-<<<<<<< HEAD
-function SongCard({ songData }) {
-  {
-    console.log("here", songData);
-  }
-=======
-function SongCard({ songData,setSongLink }) {
-
-  function handleSongPlay(){
+function SongCard({ songData, setSongLink }) {
+  function handleSongPlay() {
     setSongLink(songData.audio);
   }
 
   console.log("song data is", songData);
->>>>>>> e2178a7f670ac529a7f3c398d86caa319cf1a91b
   return (
     <div className={classes.card_main}>
       {/* `data:image/png;base64,${new Identicon(
           songData.tokenURI,
           500
-<<<<<<< HEAD
         ).toString()}` */}
       <img src={songData.cover} alt="cover" />{" "}
-      <BsPlayCircle className={classes.playIcon} />
-=======
-        ).toString()}`}
-        alt="cover"
-      />{" "}
       <BsPlayCircle onClick={handleSongPlay} className={classes.playIcon} />
->>>>>>> e2178a7f670ac529a7f3c398d86caa319cf1a91b
       <div className={classes.song_data}>
         <h3>{songData?.name}</h3>
         <Link href="/artist">
