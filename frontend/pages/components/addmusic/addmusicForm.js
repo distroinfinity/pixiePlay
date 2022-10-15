@@ -28,9 +28,12 @@ function AddmusicForm() {
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState();
   const [price, setPrice] = useState(null);
-  const [fileUrl, setFileUrl] = useState(null);
+  // const [fileUrl, setFileUrl] = useState(null);
   const [mp3, setMp3] = useState(null);
+  const [cover, setCover] = useState(null);
+
   const router = useRouter();
+
   function handleChange(e) {
     e.preventDefault();
     const { name, value } = e.target;
@@ -51,6 +54,10 @@ function AddmusicForm() {
     const file = e.target.files[0];
     setMp3(file);
   }
+  async function selectCover(e) {
+    const file = e.target.files[0];
+    setCover(file);
+  }
 
   async function uploadToIPFS(mp3Url) {
     /* first, upload to IPFS */
@@ -70,7 +77,7 @@ function AddmusicForm() {
   }
 
   async function listNFTForSale() {
-    if (!name || !desc || !price || !royalty) return;
+    if (!name || !desc || !price || !royalty || !cover || !mp3) return;
 
     let mp3Url;
     try {
@@ -80,11 +87,19 @@ function AddmusicForm() {
     } catch (error) {
       console.log("Error uploading mp3: ", error);
     }
-
     console.log("mp3url is ", mp3Url);
 
-    const nftUrl = await uploadToIPFS(mp3Url);
+    let coverUrl;
+    try {
+      const result = await ipfs.add(cover);
+      console.log("infura result", result);
+      coverUrl = `https://music-mania.infura-ipfs.io/ipfs/${result.path}`;
+    } catch (error) {
+      console.log("Error uploading cover photo: ", error);
+    }
+    console.log("cover url is ", coverUrl);
 
+    const nftUrl = await uploadToIPFS(mp3Url);
     console.log("nft url is ", nftUrl);
 
     const web3Modal = new Web3Modal();
@@ -101,9 +116,15 @@ function AddmusicForm() {
     );
     let listingPrice = await contract.getListingPrice();
     listingPrice = listingPrice.toString();
-    let transaction = await contract.createToken(nftUrl, price_, royalty, {
-      value: listingPrice,
-    });
+    let transaction = await contract.createToken(
+      nftUrl,
+      price_,
+      royalty,
+      coverUrl,
+      {
+        value: listingPrice,
+      }
+    );
     await transaction.wait();
 
     router.push("/");
@@ -148,10 +169,20 @@ function AddmusicForm() {
         />
       </div>
       <div className={classes.input_div}>
+        <label>Select audio</label>
         <input
           onChange={onChange}
           type="file"
           accept=".mp3"
+          className={classes.inputt}
+        />
+      </div>
+      <div className={classes.input_div}>
+        <label>Select cover photo</label>
+        <input
+          onChange={selectCover}
+          type="file"
+          accept=".jpeg"
           className={classes.inputt}
         />
       </div>

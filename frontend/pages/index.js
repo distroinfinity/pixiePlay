@@ -17,11 +17,12 @@ import axios from "axios";
 import sha256 from "./helperfunctions/hash";
 import { marketplaceAddress } from "./../../backend/config";
 import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+
 import Song from "./components/songs/songs";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-function Home({setSongLink}) {
+function Home({ setSongLink }) {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
 
@@ -38,6 +39,7 @@ function Home({setSongLink}) {
       provider
     );
     const data = await contract.fetchMarketItems();
+    console.log("nfts are", data);
 
     /*
      *  map over items returned from smart contract and format
@@ -64,11 +66,12 @@ function Home({setSongLink}) {
           artist: i.artist,
           sold: i.sold,
           audio: meta.data.image,
+          cover: i.cover,
         };
         return item;
       })
     );
-    console.log("nfts are", items);
+
     setNfts(items);
     setLoadingState("loaded");
   }
@@ -127,7 +130,6 @@ function Home({setSongLink}) {
           <Song setSongLink={setSongLink} nfts={nfts}></Song>
         </div>
       </div>
-      
     </div>
   );
 }
