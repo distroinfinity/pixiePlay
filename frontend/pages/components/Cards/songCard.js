@@ -4,7 +4,12 @@ import { BsPlayCircle } from "react-icons/bs";
 import Link from "next/link";
 import Identicon from "identicon.js";
 
-function SongCard({ songData }) {
+function SongCard({ songData,setSongLink }) {
+
+  function handleSongPlay(){
+    setSongLink(songData.audio);
+  }
+
   console.log("song data is", songData);
   return (
     <div className={classes.card_main}>
@@ -15,12 +20,15 @@ function SongCard({ songData }) {
         ).toString()}`}
         alt="cover"
       />{" "}
-      <BsPlayCircle className={classes.playIcon} />
+      <BsPlayCircle onClick={handleSongPlay} className={classes.playIcon} />
       <div className={classes.song_data}>
         <h3>{songData?.name}</h3>
         <Link href="/artist">
           <p className={classes.artistName}>
-            {"0x...." + songData.artist.substr(songData.artist.length - 5)}
+            Artist: &nbsp;{" "}
+            <span className={classes.price}>
+              {"0x...." + songData.artist.substr(songData.artist.length - 5)}
+            </span>
           </p>
         </Link>
         <div className={classes.price_div}>
