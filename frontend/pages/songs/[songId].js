@@ -1,46 +1,62 @@
-import React from 'react'
+import React, { useState } from "react";
 import classes from "../../styles/songPage.module.css";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import { ConnectButton } from "web3uikit";
-import FansList from '../components/fansList';
-import Link from 'next/link';
+import FansList from "../components/fansList";
+import Link from "next/link";
 import { BiSearch } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoPersonOutline } from "react-icons/io5";
-import { useRouter } from "next/router";    
-function SongPage({setSongLink}) {
-    const Data={
-     url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-     name: "Gaani",
-     artistName: "Guri",
-     price: 0.5,
-     desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-     owner:"nssad12e91901dsld"
-   };
-   const fanData = [
-     {
-       address: "123893123193asd1920213213",
-       donations: 100,
-     },
-     {
-       address: "123893123193asd1920213213",
-       donations: 100,
-     },
-     {
-       address: "123893123193asd1920213213",
-       donations: 100,
-     },
-     {
-       address: "123893123193asd1920213213",
-       donations: 100,
-     },
-     {
-       address: "123893123193asd1920213213",
-       donations: 100,
-     },
-   ];
-
+import { useRouter } from "next/router";
+import { Modal, Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+function SongPage({ setSongLink }) {
+  const [show, setShow] = useState(false);
+  const [resellAmount, setResellAmount] = useState();
+  function handleShow() {
+    setShow(true);
+  }
+  function handleClose() {
+    setShow(false);
+  }
+  function handleChange(e) {
+    e.preventDefault();
+    const { name, value } = e.target;
+    if (name === "resell") {
+      setResellAmount(value);
+    }
+  }
+  const Data = {
+    url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
+    name: "Gaani",
+    artistName: "Guri",
+    price: 0.5,
+    desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
+    owner: "nssad12e91901dsld",
+  };
+  const fanData = [
+    {
+      address: "123893123193asd1920213213",
+      donations: 100,
+    },
+    {
+      address: "123893123193asd1920213213",
+      donations: 100,
+    },
+    {
+      address: "123893123193asd1920213213",
+      donations: 100,
+    },
+    {
+      address: "123893123193asd1920213213",
+      donations: 100,
+    },
+    {
+      address: "123893123193asd1920213213",
+      donations: 100,
+    },
+  ];
 
   return (
     <div>
@@ -91,6 +107,30 @@ function SongPage({setSongLink}) {
         </div>
 
         <div className="home_right1">
+          <Modal centered show={show} onHide={handleClose}>
+            <Modal.Header closeButton>ReSell NFT</Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Label>Price</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="resell"
+                  value={resellAmount}
+                  onChange={handleChange}
+                ></Form.Control>
+                <div
+                  style={{
+                    marginTop: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  <button className={classes.buy_btn}>Relist</button>
+                </div>
+              </Form>
+            </Modal.Body>
+          </Modal>
           <div className={classes.songpage_main}>
             <h1>Song Details</h1>
             <div className={classes.song1}>
@@ -118,7 +158,9 @@ function SongPage({setSongLink}) {
               <div className={classes.song_right}>
                 <button className={classes.play_btn}>Play</button>
                 <button className={classes.buy_nft}>Buy NFT</button>
-                <button className={classes.buy_nft}>Resell NFT</button>
+                <button onClick={handleShow} className={classes.buy_nft}>
+                  Relist NFT
+                </button>
               </div>
             </div>
             <div className={classes.fans_list}>
@@ -138,4 +180,4 @@ function SongPage({setSongLink}) {
   );
 }
 
-export default SongPage 
+export default SongPage;
