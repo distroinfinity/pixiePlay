@@ -36,24 +36,22 @@ function SongCard({ songData, setSongLink }) {
   // console.log("song data is", songData);
   return (
     <div className={classes.card_main}>
-      {/* `data:image/png;base64,${new Identicon(
-          songData.tokenURI,
-          500
-        ).toString()}` */}
-      <Link href={`/songs/${songData.address}`}>
+      <Link href={`/songs/${songData.tokenId}`}>
         <img src={songData.cover} alt="cover" />
       </Link>{" "}
       <BsPlayCircle onClick={handleSongPlay} className={classes.playIcon} />
       <div className={classes.song_data}>
         {" "}
-        <Link href={`/songs/${songData.address}`}>
+        <Link href={`/songs/${songData.tokenId}`}>
           <h3>{songData?.name}</h3>
         </Link>
         <p className={classes.artistName}>
           Artist: &nbsp;{" "}
           <Link href={`/artist/${songData.artist}`}>
+
             <span style={{cursor:"pointer"}} className={classes.price}>
               {"0x...." + songData?.artist?.substr(songData.artist.length - 5)}
+
             </span>
           </Link>
         </p>

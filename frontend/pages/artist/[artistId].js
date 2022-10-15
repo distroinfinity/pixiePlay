@@ -35,6 +35,7 @@ function Artist({ setSongLink, songLink }) {
   useEffect(() => {
     loadData();
   }, []);
+
   async function loadData() {
     await fetchTracks(router.query.artistId);
     await fetchFans(router.query.artistId);
@@ -77,9 +78,7 @@ function Artist({ setSongLink, songLink }) {
         return item;
       })
     );
-
-    console.log("refined are..", items);
-
+    // console.log("refined are..", items);
     setTracks(items);
   }
 
@@ -97,15 +96,9 @@ function Artist({ setSongLink, songLink }) {
 
     const items = await Promise.all(
       data.map(async (i) => {
-        // const tokenUri = await contract.tokenURI(i.tokenId);
-        // const meta = await axios.get(tokenUri);
-        // console.log("meta data is", meta.data.image);
         let amount = ethers.utils.formatUnits(i.amount.toString(), "ether");
         let type =
           ethers.utils.formatUnits(i.fanType.toString(), "ether") * 1e18;
-        // const hash = await sha256(
-        //   tokenUri.replace("https://music-mania.infura-ipfs.io/ipfs/", "")
-        // );
         let item = {
           amount,
           fan: i.fan,
@@ -114,8 +107,7 @@ function Artist({ setSongLink, songLink }) {
         return item;
       })
     );
-    console.log("refined fans", items);
-
+    // console.log("refined fans", items);
     setFans(items);
   }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "../../styles/songPage.module.css";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 import { ConnectButton } from "web3uikit";
@@ -12,52 +12,103 @@ import { useRouter } from "next/router";
 import {MdLibraryMusic} from "react-icons/md"
 import { Modal, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ethers } from "ethers";
+import axios from "axios";
+import sha256 from "./../helperfunctions/hash";
+
+import { marketplaceAddress } from "./../../../backend/config";
+import NFTMarketplace from "./../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
+
 function SongPage({ setSongLink }) {
-  const [show, setShow] = useState(false);
-  const [resellAmount, setResellAmount] = useState();
-  function handleShow() {
-    setShow(true);
+  const [fans, setFans] = useState([]);
+  const [trackInfo, setTrackInfo] = useState("");
+  const [account, setAccount] = useState(null);
+
+  let router = useRouter();
+
+  useEffect(() => {
+    loadData();
+  }, [account]);
+
+  async function loadData() {
+    await getTrackInfo(router.query.songId);
+    await fetchFans(router.query.songId);
+    // await getAccount();
   }
-  function handleClose() {
-    setShow(false);
+  // async function getAccount() {
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+  //   let accounts = await provider.send("eth_requestAccounts", []);
+  //   let account = accounts[0];
+  //   // console.log(account);
+  //   // setAccount(account);
+  // }
+
+  async function getTrackInfo(trackId) {
+    //getNFT
+    if (trackInfo != "") return;
+
+    // console.log("track id is ", trackId);
+    const provider = new ethers.providers.JsonRpcProvider();
+    // console.log("provider ", provider);
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      provider
+    );
+    const data = await contract.getNFT(trackId);
+    // console.log("data is", data);
+    const tokenUri = await contract.tokenURI(data.tokenId);
+    const meta = await axios.get(tokenUri);
+    let price = ethers.utils.formatUnits(data.price.toString(), "ether");
+    const hash = await sha256(
+      tokenUri.replace("https://music-mania.infura-ipfs.io/ipfs/", "")
+    );
+    let item = {
+      price,
+      tokenId: data.tokenId.toNumber(),
+      seller: data.seller,
+      owner: data.owner,
+      image: meta.data.image,
+      name: meta.data.name,
+      description: meta.data.description,
+      identiconHash: hash,
+      artist: data.artist,
+      sold: data.sold,
+      audio: meta.data.image,
+      cover: data.cover,
+    };
+    // return item;
+
+    // console.log("song info", item);
+    setTrackInfo(item);
   }
-  function handleChange(e) {
-    e.preventDefault();
-    const { name, value } = e.target;
-    if (name === "resell") {
-      setResellAmount(value);
-    }
+
+  async function fetchFans(songId) {
+    if (!songId || fans.length > 0) return;
+    const provider = new ethers.providers.JsonRpcProvider();
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      provider
+    );
+    const data = await contract.fetchFansforNft(songId);
+
+    const items = await Promise.all(
+      data.map(async (i) => {
+        let amount = ethers.utils.formatUnits(i.amount.toString(), "ether");
+        let type =
+          ethers.utils.formatUnits(i.fanType.toString(), "ether") * 1e18;
+        let item = {
+          amount,
+          fan: i.fan,
+          fanType: type,
+        };
+        return item;
+      })
+    );
+    // console.log("refined fans", items);
+    setFans(items);
   }
-  const Data = {
-    url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-    name: "Gaani",
-    artistName: "Guri",
-    price: 0.5,
-    desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    owner: "nssad12e91901dsld",
-  };
-  const fanData = [
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-  ];
 
   return (
     <div>
@@ -110,35 +161,11 @@ function SongPage({ setSongLink }) {
         </div>
 
         <div className="home_right1">
-          <Modal centered show={show} onHide={handleClose}>
-            <Modal.Header closeButton>ReSell NFT</Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Label>Price</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="resell"
-                  value={resellAmount}
-                  onChange={handleChange}
-                ></Form.Control>
-                <div
-                  style={{
-                    marginTop: "20px",
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                >
-                  <button className={classes.buy_btn}>Relist</button>
-                </div>
-              </Form>
-            </Modal.Body>
-          </Modal>
           <div className={classes.songpage_main}>
             <h1>Song Details</h1>
             <div className={classes.song1}>
               <div className={classes.song_left}>
-                <img src={Data.url} />
+                <img src={trackInfo.cover} />
               </div>
               <div className={classes.song_center}>
                 <div className={classes.labelss}>
@@ -150,27 +177,36 @@ function SongPage({ setSongLink }) {
                   <p>Owner</p>
                 </div>
                 <div className={classes.details}>
-                  <p>: {Data.name}</p>
-                  <p>: {Data.desc}</p>
-                  <p>: {Data.artistName}</p>
-                  <p>: {Data.price}</p>
-                  <p>: {Data.sold ? `For Sale` : `Sold`}</p>
-                  <p>: {Data.owner}</p>
+                  <p>: {trackInfo.name}</p>
+                  <p>: {trackInfo.description}</p>
+                  <p>: {trackInfo.artist}</p>
+                  <p>: {trackInfo.price}</p>
+                  <p>: {trackInfo.sold ? `For Sale` : `Sold`}</p>
+                  <p>: {trackInfo.owner}</p>
                 </div>
               </div>
               <div className={classes.song_right}>
                 <button className={classes.play_btn}>Play</button>
-                <button className={classes.buy_nft}>Buy NFT</button>
-                <button onClick={handleShow} className={classes.buy_nft}>
-                  Relist NFT
-                </button>
+                {/* {trackInfo.sold == false ? (
+                  <button className={classes.buy_nft}>Buy NFT</button>
+                ) : (
+                  ""
+                )}
+                {console.log(account, trackInfo.owner)}
+                {account == trackInfo.owner ? (
+                  <button onClick={handleShow} className={classes.buy_nft}>
+                    Relist NFT
+                  </button>
+                ) : (
+                  ""
+                )} */}
               </div>
             </div>
             <div className={classes.fans_list}>
               <div className={classes.artist_fans}>
                 <h1>Top Fans</h1>
                 <div className={classes.songs_table}>
-                  {fanData.map((d, index) => (
+                  {fans.map((d, index) => (
                     <FansList fanData={d} index={index} />
                   ))}
                 </div>
