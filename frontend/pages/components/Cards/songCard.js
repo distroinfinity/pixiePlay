@@ -29,6 +29,7 @@ function SongCard({ songData }) {
             <span className={classes.price}>{songData?.price} Matic</span>
           </p>
         </div>
+        <button className={classes.buy_btn}>Buy</button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 .card_main {
   width: 250px;
-  height: 260px;
+  height: 290px;
   text-align: left;
   color: rgb(196, 196, 196);
   background-color: rgb(24, 24, 24);
@@ -51,4 +51,8 @@
 }
 .song_data {
   padding: 10px 10px;
+}
+.buy_btn{
+  padding:8px 15px;
+  margin-left: 160px;
 }
