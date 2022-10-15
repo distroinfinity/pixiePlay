@@ -18,11 +18,14 @@ import sha256 from "./helperfunctions/hash";
 import { marketplaceAddress } from "./../../backend/config";
 // import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Song from "./components/songs/songs";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
+
 
 function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
-
+  const [songLink, setSongLink] = useState("https://music-mania.infura-ipfs.io/ipfs/QmZ7QnMFm5147GuCsmJEdiJ7ECEagmuqDNUGkbh4ceRpXo");
   // useEffect(() => {
   //   loadNFTs();
   // }, []);
@@ -125,6 +128,11 @@ function Home() {
           <Song></Song>
         </div>
       </div>
+      <AudioPlayer
+        src={songLink}
+        onPlay={(e) => console.log("onPlay")}
+        // other props here
+      />
     </div>
   );
 }
