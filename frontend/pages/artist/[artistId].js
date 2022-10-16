@@ -91,6 +91,7 @@ function Artist({ setSongLink, songLink }) {
       NFTMarketplace.abi,
       provider
     );
+
     const data = await contract.fetchFansforArtist(artist);
     console.log("fans... ", data);
 

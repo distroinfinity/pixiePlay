@@ -18,6 +18,7 @@ module.exports = {
       //   url: MAINNET_RPC_URL
       // }
       chainId: 1337,
+      allowUnlimitedContractSize: true,
     },
     // localhost: {
     //   chainId: 31337,

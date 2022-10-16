@@ -107,7 +107,40 @@ function SongPage({ setSongLink }) {
       })
     );
     // console.log("refined fans", items);
-    setFans(items);
+
+    let uniqueItems;
+    var holder = {};
+
+    items.forEach(function (d) {
+      //d - { amount, fan , fan type}
+
+      if (holder.hasOwnProperty(d.fan)) {
+        // holder[d.fan] = holder[d.name] + d.value;
+        holder[d.fan] = {
+          amount: parseInt(holder[d.fan].amount) + parseInt(d.amount),
+          fanType: parseInt(holder[d.fan].fanType) || parseInt(d.fanType),
+        };
+      } else {
+        holder[d.fan] = { amount: d.amount, fanType: parseInt(d.fanType) };
+      }
+    });
+    let final = [];
+    for (var prop in holder) {
+      final.push({
+        fan: prop,
+        amount: holder[prop].amount,
+        fanType: holder[prop].fanType,
+      });
+    }
+    function compare(a, b) {
+      if (a.amount > b.amount) {
+        return 1;
+      }
+      return 0;
+    }
+    final.sort(compare);
+    // console.log("Filtered fans are", final);
+    setFans(final);
   }
 
   return (
@@ -186,7 +219,12 @@ function SongPage({ setSongLink }) {
                 </div>
               </div>
               <div className={classes.song_right}>
-                <button onClick={()=>setSongLink(trackInfo.audio)} className={classes.play_btn}>Play</button>
+                <button
+                  onClick={() => setSongLink(trackInfo.audio)}
+                  className={classes.play_btn}
+                >
+                  Play
+                </button>
                 {/* {trackInfo.sold == false ? (
                   <button className={classes.buy_nft}>Buy NFT</button>
                 ) : (
