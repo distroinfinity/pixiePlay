@@ -60,3 +60,33 @@
   padding: 20px 20px;
   color: white;
 }
+.events_div{
+  text-align: left;
+  padding: 20px 20px;
+  color: white;
+}
+
+.eventList{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+   padding: 5px 10px;
+    border-bottom: 1px solid rgb(50, 50, 50);
+  padding-right: 40px;
+}
+.buyEvent_btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  margin-bottom: 20px;
+  padding: 9px 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  
+  background-color: rgb(222, 222, 222);
+ 
+  border-radius: 5px;
+  margin-top: 10px;
+}

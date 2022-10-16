@@ -191,6 +191,25 @@ function Artist({ setSongLink, songLink }) {
       donations: 100,
     },
   ];
+
+  const eventData = [
+    {
+      name: "meet and greet",
+      desc: "casual meet up",
+      link: "GIP Mall",
+      date: "30 Oct 2022, 4pm",
+      price: "10 Matic",
+      tickets: "20",
+    },
+    {
+      name: "meet and greet",
+      desc: "casual meet up",
+      link: "GIP Mall",
+      date: "30 Oct 2022, 4pm",
+      price: "10 Matic",
+      tickets: "20",
+    },
+  ];
   return (
     <div>
       <div className="header_main">
@@ -255,13 +274,16 @@ function Artist({ setSongLink, songLink }) {
             <div className={classes.artist_songs}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 {" "}
-               
                 <h2 style={{ marginLeft: "0px" }}>Popular</h2>
               </div>
 
               <div className={classes.songs_table}>
                 {tracks.map((d, index) => (
-                  <SongsList setSongLink={setSongLink} songdata={d} index={index} />
+                  <SongsList
+                    setSongLink={setSongLink}
+                    songdata={d}
+                    index={index}
+                  />
                 ))}
               </div>
             </div>
@@ -270,6 +292,23 @@ function Artist({ setSongLink, songLink }) {
               <div className={classes.songs_table}>
                 {fans.map((d, index) => (
                   <FansList fanData={d} index={index} />
+                ))}
+              </div>
+            </div>
+            <div className={classes.events_div}>
+              <h2>Upcoming Events</h2>
+              <div className={classes.songs_table}>
+                {eventData.map((d, index) => (
+                  <div className={classes.eventList}>
+                    <p>{index + 1}</p>
+                    <p>{d.name}</p>
+                    <p>{d.desc}</p>
+                    <p>{d.date}</p>
+                    <p>{d.link}</p>
+                    <p>{d.price}</p>
+                    <p>{d.noOfTickets}</p>
+                    <button className={classes.buyEvent_btn}>Buy Ticket</button>
+                  </div>
                 ))}
               </div>
             </div>

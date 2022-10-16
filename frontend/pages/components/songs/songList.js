@@ -9,8 +9,8 @@ function SongsList({setSongLink, songdata, index }) {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-evenly",
-          width: "70%",
+          justifyContent: "space-between",
+          width: "50%",
         }}
       >
         <p style={{ flex: "0.1" }}>{index + 1}</p>
