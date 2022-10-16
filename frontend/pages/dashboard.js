@@ -19,94 +19,17 @@ import Web3Modal from "web3modal";
 import axios from "axios";
 import { ethers } from "ethers";
 import sha256 from "./helperfunctions/hash";
-
+import Loader from "./components/loader"
 import { marketplaceAddress } from "./../../backend/config";
 import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import { Router } from "next/router";
 import { useRouter } from "next/router";
+import FansList from "./components/fansList";
 
 function Dashboard({ setSongLink }) {
   const router = useRouter();
 
-  const data = [
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artist: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artist: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-  ];
-
-  const events = [
-    {
-      name: "meetUp",
-      description: "just meeting for fun",
-      time: "10pm 3 Dec,2022",
-      link: "linkkk",
-    },
-    {
-      name: "meetUp",
-      description: "just meeting for fun",
-      time: "10pm 3 Dec,2022",
-      link: "linkkk",
-    },
-    {
-      name: "meetUp",
-      description: "just meeting for fun",
-      time: "10pm 3 Dec,2022",
-      link: "linkkk",
-    },
-  ];
+  
   const [show, setShow] = useState(false);
   const [name, setName] = useState();
   const [date, setDate] = useState();
@@ -114,6 +37,7 @@ function Dashboard({ setSongLink }) {
   const [link, setLink] = useState();
   const [myNfts, setMyNfts] = useState([]);
   const [Events, setEvents] = useState([]);
+  const [loadingState,setLoadingState]=useState(true);
   useEffect(() => {
     loadNFTs();
     loadEvents();
@@ -186,6 +110,7 @@ function Dashboard({ setSongLink }) {
     );
     // console.log("refined my listed", items);
     setMyNfts(items);
+    setLoadingState(false);
   }
   async function loadEvents() {
     const web3Modal = new Web3Modal({
@@ -215,6 +140,7 @@ function Dashboard({ setSongLink }) {
     );
     console.log("refined eve", items);
     setEvents(items);
+
   }
 
   function handleShow() {
@@ -262,7 +188,7 @@ function Dashboard({ setSongLink }) {
           <ConnectButton moralisAuth={false} />
         </div>
       </div>
-
+        {loadingState?<Loader/>:
       <div className="home2">
         <div className="sidebar_main">
           <Link href="/">
@@ -297,7 +223,7 @@ function Dashboard({ setSongLink }) {
             <br />
             <div className={classes.dashboard_nfts}>
               {myNfts.length == 0 && (
-                <h5 style={{ textAlign: "center", width: "100%" }}>
+                <h5 style={{ textAlign: "center", width: "100%",color:"grey"}}>
                   You haven't minted any music yet.....
                 </h5>
               )}
@@ -362,16 +288,22 @@ function Dashboard({ setSongLink }) {
                 Create Event
               </button>
               {Events.length == 0 && (
-                <h5>You haven't created any events yet...</h5>
+                <h5 style={{color:"grey"}}>You haven't created any events yet...</h5>
               )}
               {Events.map((e, index) => (
                 <EventList eventData={e} index={index} />
               ))}
               <div className={classes.events}></div>
             </div>
+            <div className={classes.fans_div}>
+             
+              {fansData.map((d, index) => (
+                <FansList key={index} fanData={d} />
+              ))}
           </div>
         </div>
       </div>
+        </div>}
     </div>
   );
 }

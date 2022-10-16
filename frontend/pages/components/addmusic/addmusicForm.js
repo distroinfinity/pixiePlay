@@ -23,7 +23,7 @@ const ipfs = ipfsHttpClient({
 import { marketplaceAddress } from "../../../../backend/config";
 import NFTMarketplace from "./../../../../backend/artifacts/contracts/NFTMarketPlace.sol/NFTMarketplace.json";
 
-function AddmusicForm() {
+function AddmusicForm({setLoadingState}) {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [royalty, setRoyalty] = useState();
@@ -77,6 +77,7 @@ function AddmusicForm() {
   }
 
   async function listNFTForSale() {
+    setLoadingState(true);
     if (!name || !desc || !price || !royalty || !cover || !mp3) return;
 
     let mp3Url;
@@ -126,7 +127,7 @@ function AddmusicForm() {
       }
     );
     await transaction.wait();
-
+setLoadingState(false);
     router.push("/");
   }
 

@@ -4,7 +4,7 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import sha256 from "./helperfunctions/hash";
 import axios from "axios";
-
+import Loader from "./components/loader";
 import SongCard from "./components/Cards/songCard2";
 import { BiSearch } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
@@ -23,7 +23,7 @@ import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.s
 
 function Mymusic({ setSongLink }) {
   const [nfts, setNfts] = useState([]);
-
+  const [loadingState,setLoadingState]=useState(true);
   useEffect(() => {
     loadNFTs();
   }, []);
@@ -71,6 +71,7 @@ function Mymusic({ setSongLink }) {
     );
     console.log("my nfts", items);
     setNfts(items);
+    setLoadingState(false);
   }
 
   return (
@@ -95,50 +96,58 @@ function Mymusic({ setSongLink }) {
           <ConnectButton moralisAuth={false} />
         </div>
       </div>
-      <div className="home2">
-        <div className="sidebar_main">
-          <Link href="/">
-            <div className="side_mini ">
-              <AiOutlineHome />
-              <p>Home</p>
-            </div>
-          </Link>
-          <Link href="/addnewmusic">
-            <div className="side_mini ">
-              <RiMoneyDollarCircleLine />
-              <p>Mint new music</p>
-            </div>
-          </Link>
-          <Link href="/mymusic">
-            <div className="side_mini active">
-              <MdLibraryMusic />
-              <p>Owned Music</p>
-            </div>
-          </Link>
-          <Link href="/dashboard">
-            <div className="side_mini">
-              <IoPersonOutline />
-              <p>Creator Dashboard</p>
-            </div>
-          </Link>
-        </div>
+      {loadingState ? (
+        <Loader />
+      ) : (
+        <div className="home2">
+          <div className="sidebar_main">
+            <Link href="/">
+              <div className="side_mini ">
+                <AiOutlineHome />
+                <p>Home</p>
+              </div>
+            </Link>
+            <Link href="/addnewmusic">
+              <div className="side_mini ">
+                <RiMoneyDollarCircleLine />
+                <p>Mint new music</p>
+              </div>
+            </Link>
+            <Link href="/mymusic">
+              <div className="side_mini active">
+                <MdLibraryMusic />
+                <p>Owned Music</p>
+              </div>
+            </Link>
+            <Link href="/dashboard">
+              <div className="side_mini">
+                <IoPersonOutline />
+                <p>Creator Dashboard</p>
+              </div>
+            </Link>
+          </div>
 
-        <div className="home_right">
-          <div className={classes.mymusic_main}>
-            <h1>My NFTs</h1>
-            <div className={classes.mymusic}>
-              {nfts.length == 0 && (
-                <h5 style={{ textAlign: "center", width: "100%" }}>
-                  You dont purchased any NFTs yet...
-                </h5>
-              )}
-              {nfts.map((d, index) => (
-                <SongCard key={index} songData={d} setSongLink={setSongLink} />
-              ))}
+          <div className="home_right">
+            <div className={classes.mymusic_main}>
+              <h1>My NFTs</h1>
+              <div className={classes.mymusic}>
+                {nfts.length == 0 && (
+                  <h5 style={{ textAlign: "center", width: "100%" }}>
+                    You dont purchased any NFTs yet...
+                  </h5>
+                )}
+                {nfts.map((d, index) => (
+                  <SongCard
+                    key={index}
+                    songData={d}
+                    setSongLink={setSongLink}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

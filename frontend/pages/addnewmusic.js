@@ -15,9 +15,15 @@ import { marketplaceAddress } from "./../../backend/config";
 // import NFTMarketplace from "./../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Song from "./components/songs/songs";
 import { useRouter } from "next/router";
+import Loader from "./components/loader";
 function Addnewmusic() {
   let router = useRouter();
-
+  const [loadingState,setLoadingState]=useState(true);
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoadingState(false);
+    },2000)
+  },[]);
   return (
     <div>
       <div className="header_main">
@@ -40,6 +46,9 @@ function Addnewmusic() {
           <ConnectButton moralisAuth={false} />
         </div>
       </div>
+      {
+        loadingState?<Loader/>:
+      
       <div className="home2">
         <div className="sidebar_main">
           <Link href="/">
@@ -70,9 +79,9 @@ function Addnewmusic() {
 
         <div className="home_right">
           <h1>Add Your Music</h1>
-          <AddmusicForm />
+          <AddmusicForm setLoadingState={setLoadingState} />
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

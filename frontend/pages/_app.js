@@ -24,16 +24,24 @@ function MyApp({ Component, pageProps }) {
       <MoralisProvider initializeOnMount={false}>
         <NotificationProvider>
           {/* <Link href="/"></Link> */}
-          <Component songLink={songLink} setSongLink={setSongLink} {...pageProps} />
+          <Component
+            songLink={songLink}
+            setSongLink={setSongLink}
+            {...pageProps}
+          />
           <div className="player_div">
-          <p  onClick={(e)=>setSongLink("")} className="x_div">x</p>
             {songLink && songLink !== "" && (
-              <AudioPlayer
-                autoPlay
-                src={songLink}
-                onPlay={(e) => console.log("onPlay")}
-                // other props here
-              />
+              <>
+                <p onClick={(e) => setSongLink("")} className="x_div">
+                  x
+                </p>
+                <AudioPlayer
+                  autoPlay
+                  src={songLink}
+                  onPlay={(e) => console.log("onPlay")}
+                  // other props here
+                />
+              </>
             )}
           </div>
         </NotificationProvider>
