@@ -14,7 +14,7 @@ import classes from "../styles/Home.module.css";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
-
+import Loader from "./components/loader";
 import sha256 from "./helperfunctions/hash";
 
 import { marketplaceAddress } from "./../../backend/config";
@@ -26,7 +26,7 @@ import "react-h5-audio-player/lib/styles.css";
 
 function Home({ setSongLink }) {
   const [nfts, setNfts] = useState([]);
-  const [loadingState, setLoadingState] = useState("not-loaded");
+  const [loadingState, setLoadingState] = useState(true);
   const [newBuy,setNewBuy]=useState(false);
 
   useEffect(() => {
@@ -76,11 +76,12 @@ function Home({ setSongLink }) {
     );
 
     setNfts(items);
-    setLoadingState("loaded");
+    setLoadingState(false);
   }
 
   return (
     <div>
+    
       <div className="header_main">
         <div className="header_left">
           <Link href="/">
@@ -101,6 +102,7 @@ function Home({ setSongLink }) {
           <ConnectButton moralisAuth={false} />
         </div>
       </div>
+      {loadingState?<Loader/>:
       <div className="home2">
         <div className="sidebar_main">
           <Link href="/">
@@ -144,6 +146,7 @@ function Home({ setSongLink }) {
 
         </div>
       </div>
+    }
     </div>
   );
 }
