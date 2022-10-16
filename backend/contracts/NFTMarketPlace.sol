@@ -184,8 +184,8 @@ contract NFTMarketplace is ERC721URIStorage {
         _eventsListed.increment();
     }
 
-    function fetchEvents() public view returns (events[] memory) {
-        return artistToEvents[msg.sender];
+    function fetchEvents(address artist) public view returns (events[] memory) {
+        return artistToEvents[artist];
     }
 
     /* Creates the sale of a marketplace item */

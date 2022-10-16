@@ -47,11 +47,18 @@ function Dashboard({ setSongLink }) {
 
   async function scheduleEvent(e) {
     e.preventDefault();
-    console.log("creating event/......", name, desc, link, date);
+    // console.log("creating event/......", name, desc, link, date);
     const web3Modal = new Web3Modal({
       network: "mainnet",
       cacheProvider: true,
     });
+    // async function getAccount() {
+    //   const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    //   let accounts = await provider.send("eth_requestAccounts", []);
+    //   let account = accounts[0];
+    //   // console.log(account);
+    //   // setAccount(account);
+    // }
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
@@ -126,10 +133,11 @@ function Dashboard({ setSongLink }) {
         return item;
       })
     );
-    console.log("refined my nfts", items);
+    // console.log("refined my nfts", items);
     setMyNfts(items);
     setLoadingState(false);
   }
+
   async function loadEvents() {
     const web3Modal = new Web3Modal({
       network: "mainnet",
@@ -144,8 +152,11 @@ function Dashboard({ setSongLink }) {
       NFTMarketplace.abi,
       signer
     );
-    const data = await contract.fetchEvents();
-    // console.log("event data", data);
+    let accounts = await provider.send("eth_requestAccounts", []);
+    let account = accounts[0];
+    console.log("account is", account);
+    const data = await contract.fetchEvents(account);
+    console.log("event data", data);
 
     const items = await Promise.all(
       data.map(async (i) => {
@@ -164,7 +175,7 @@ function Dashboard({ setSongLink }) {
         return item;
       })
     );
-    console.log("refined events", items);
+    // console.log("refined events", items);
     setEvents(items);
   }
 

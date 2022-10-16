@@ -19,6 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ethers } from "ethers";
 import axios from "axios";
 import Identicon from "identicon.js";
+import Web3Modal from "web3modal";
 
 import { marketplaceAddress } from "../../../backend/config";
 import NFTMarketplace from "../../../backend/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
@@ -28,13 +29,59 @@ import sha256 from "../helperfunctions/hash";
 function Artist({ setSongLink, songLink }) {
   const [tracks, setTracks] = useState([]);
   const [fans, setFans] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const router = useRouter();
   const [artistId, setArtistId] = useState(null);
 
   useEffect(() => {
     loadData();
+    loadEvents();
   }, []);
+
+  async function loadEvents() {
+    const web3Modal = new Web3Modal({
+      network: "mainnet",
+      cacheProvider: true,
+    });
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      signer
+    );
+
+    console.log("artist is", router.query.artistId);
+    const data = await contract.fetchEvents(router.query.artistId);
+    console.log("event data", data);
+
+    const items = await Promise.all(
+      data.map(async (i) => {
+        let price =
+          ethers.utils.formatUnits(i._priceOfTicket.toString(), "ether") * 1e18;
+        let noOfTickets =
+          ethers.utils.formatUnits(i.noOfTickets.toString(), "ether") * 1e18;
+        let eventId =
+          ethers.utils.formatUnits(i.eventId.toString(), "ether") * 1e18;
+
+        let item = {
+          description: i.description,
+          meetlink: i.meetlink,
+          name: i.name,
+          schedule: i.schedule,
+          noOfTickets: noOfTickets,
+          price: price,
+          eventId: eventId,
+        };
+        return item;
+      })
+    );
+    console.log("refined events", items);
+    setEvents(items);
+  }
 
   async function loadData() {
     await fetchTracks(router.query.artistId);
@@ -43,7 +90,7 @@ function Artist({ setSongLink, songLink }) {
 
   async function fetchTracks(artist) {
     if (tracks.length > 0) return;
-    console.log("artist id is  ", artist);
+    // console.log("artist id is  ", artist);
     const provider = new ethers.providers.JsonRpcProvider();
     const contract = new ethers.Contract(
       marketplaceAddress,
@@ -93,7 +140,7 @@ function Artist({ setSongLink, songLink }) {
     );
 
     const data = await contract.fetchFansforArtist(artist);
-    console.log("fans... ", data);
+    // console.log("fans... ", data);
 
     const items = await Promise.all(
       data.map(async (i) => {
@@ -112,105 +159,25 @@ function Artist({ setSongLink, songLink }) {
     setFans(items);
   }
 
-  const data = [
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-    {
-      url: "https://i.ytimg.com/vi/CwJ8SUhTQYA/maxresdefault.jpg",
-      name: "Gaani",
-      artistName: "Guri",
-      price: 0.5,
-      desc: "Geet MP3 & Omjee Star Studios Presenting New Song Gaani From Movie Jatt Brothers",
-    },
-  ];
-  const fanData = [
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-    {
-      address: "123893123193asd1920213213",
-      donations: 100,
-    },
-  ];
-
-  const eventData = [
-    {
-      name: "meet and greet",
-      desc: "casual meet up",
-      link: "GIP Mall",
-      date: "30 Oct 2022, 4pm",
-      price: "10 Matic",
-      tickets: "20",
-    },
-    {
-      name: "meet and greet",
-      desc: "casual meet up",
-      link: "GIP Mall",
-      date: "30 Oct 2022, 4pm",
-      price: "10 Matic",
-      tickets: "20",
-    },
-  ];
+  async function handleBuyTicket(event) {
+    console.log("Buying this ticket", event);
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      marketplaceAddress,
+      NFTMarketplace.abi,
+      signer
+    );
+    /* user will be prompted to pay the asking proces to complete the transaction */
+    console.log("price....", event.price, typeof event.price);
+    const price = ethers.utils.parseUnits(event.price.toString(), "ether");
+    const transaction = await contract.addInvites(event?.eventId, {
+      value: price,
+    });
+    await transaction.wait();
+  }
   return (
     <div>
       <div className="header_main">
@@ -299,16 +266,21 @@ function Artist({ setSongLink, songLink }) {
             <div className={classes.events_div}>
               <h2>Upcoming Events</h2>
               <div className={classes.songs_table}>
-                {eventData.map((d, index) => (
+                {events.map((d, index) => (
                   <div className={classes.eventList}>
                     <p>{index + 1}</p>
                     <p>{d.name}</p>
-                    <p>{d.desc}</p>
-                    <p>{d.date}</p>
-                    <p>{d.link}</p>
+                    <p>{d.description}</p>
+                    <p>{d.schedule}</p>
+                    <p>{d.meetlink}</p>
                     <p>{d.price}</p>
                     <p>{d.noOfTickets}</p>
-                    <button className={classes.buyEvent_btn}>Buy Ticket</button>
+                    <button
+                      // onClick={() => handleBuyTicket(d)}
+                      className={classes.buyEvent_btn}
+                    >
+                      Buy Ticket
+                    </button>
                   </div>
                 ))}
               </div>

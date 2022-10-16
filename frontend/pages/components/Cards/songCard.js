@@ -7,7 +7,7 @@ import NFTMarketplace from "./../../../../backend/artifacts/contracts/NFTMarketp
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 
-function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
+function SongCard({ songData, setSongLink, newBuy, setNewBuy }) {
   function handleSongPlay() {
     setSongLink(songData.audio);
   }
@@ -25,7 +25,10 @@ function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
       signer
     );
     /* user will be prompted to pay the asking proces to complete the transaction */
+
     const price = ethers.utils.parseUnits(songData.price.toString(), "ether");
+    console.log("fghchfgcgh", price, typeof price);
+
     const transaction = await contract.createMarketSale(songData.tokenId, {
       value: price,
     });
@@ -37,9 +40,11 @@ function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
   // console.log("song data is", songData);
   return (
     <div className={classes.card_main}>
-    {songData.sold?<div className={classes.sold_div}>
-      <h1>Sold</h1>
-    </div>:null}
+      {songData.sold ? (
+        <div className={classes.sold_div}>
+          <h1>Sold</h1>
+        </div>
+      ) : null}
       <Link href={`/songs/${songData.tokenId}`}>
         <img src={songData.cover} alt="cover" />
       </Link>{" "}
@@ -52,10 +57,8 @@ function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
         <p className={classes.artistName}>
           Artist: &nbsp;{" "}
           <Link href={`/artist/${songData.artist}`}>
-
-            <span style={{cursor:"pointer"}} className={classes.price}>
+            <span style={{ cursor: "pointer" }} className={classes.price}>
               {"0x...." + songData?.artist?.substr(songData.artist.length - 5)}
-
             </span>
           </Link>
         </p>
@@ -69,9 +72,7 @@ function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
           <button onClick={buyNFT} className={classes.buy_nft}>
             Buy
           </button>
-        ) : (
-          null
-        )}
+        ) : null}
       </div>
     </div>
   );
