@@ -6,7 +6,7 @@ function FansList({ fanData, index }) {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
           width: "50%",
         }}
       >

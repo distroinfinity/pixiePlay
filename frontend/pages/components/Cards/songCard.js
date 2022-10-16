@@ -37,6 +37,9 @@ function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
   // console.log("song data is", songData);
   return (
     <div className={classes.card_main}>
+    {songData.sold?<div className={classes.sold_div}>
+      <h1>Sold</h1>
+    </div>:null}
       <Link href={`/songs/${songData.tokenId}`}>
         <img src={songData.cover} alt="cover" />
       </Link>{" "}
@@ -67,7 +70,7 @@ function SongCard({ songData, setSongLink,newBuy,setNewBuy }) {
             Buy
           </button>
         ) : (
-          <h4 style={{ color: "red",fontSize:"20px",marginTop:"30px" }}>SOLD</h4>
+          null
         )}
       </div>
     </div>
