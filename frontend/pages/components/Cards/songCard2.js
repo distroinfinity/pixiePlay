@@ -82,7 +82,7 @@ function SongCard({ songData, setSongLink }) {
                 width: "100%",
               }}
             >
-              <button onClick={(e) => resell(e)} className={classes.buy_btn}>
+              <button onClick={(e) => resell(e)} className={classes.resell_btn}>
                 Relist
               </button>
             </div>

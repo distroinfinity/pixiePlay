@@ -269,10 +269,10 @@ function Artist({ setSongLink, songLink }) {
                 {events.map((d, index) => (
                   <div className={classes.eventList}>
                     <p>{index + 1}</p>
-                    <p>{d.name}</p>
-                    <p>{d.description}</p>
-                    <p>{d.schedule}</p>
-                    <p>{d.meetlink}</p>
+                    <p style={{ flex: "0.2" }}>{d.name}</p>
+                    <p style={{ flex: "0.2" }}>{d.description}</p>
+                    <p style={{ flex: "0.2" }}>{d.schedule}</p>
+                    <p style={{ flex: "0.2" }}>{d.meetlink}</p>
                     <p>{d.price}</p>
                     <p>{d.noOfTickets}</p>
                     <button
